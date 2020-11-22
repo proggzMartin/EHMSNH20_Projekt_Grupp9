@@ -15,7 +15,7 @@ namespace DatabaseConnection
                 //.LogTo(s => System.Diagnostics.Debug.WriteLine(s))
                 .UseLazyLoadingProxies()
                 .UseSqlServer(
-                @"server=.\SQLExpress;" +
+                @"server=localhost\SQLEXPRESS;" +
                 @"database=SaleDatabase;" +
                 @"trusted_connection=true;" +
                 @"MultipleActiveResultSets=True"
