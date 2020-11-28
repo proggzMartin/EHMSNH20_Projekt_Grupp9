@@ -1,4 +1,0 @@
-20201128
-* Addat lösenord till Customertable + kräver namn och lösenord i tabell.
-* Addat Automapper till Store för att mappa Customer till CustomerDto (Dto står för "data transfer object");
-detta för att slippa utföra mappningen själv.

@@ -30,15 +30,16 @@ namespace Store
         {
             InitializeComponent();
 
-            _context = new Context();
+            //_context = new Context();
 
-            var allCustomers = _context.Customers.AsNoTracking().ToList();
+            //var allCustomers = _context.Customers.AsNoTracking().ToList();
 
-            _customers = StoreMapper.projectMapper.Map<List<CustomerNameIdDto>>(allCustomers);
+            //_customers = StoreMapper.projectMapper.Map<List<CustomerNameIdDto>>(allCustomers);
 
-            foreach (var c in _customers)
-                peopleListBox.Items.Add(c.Name);
+            //foreach (var c in _customers)
+            //    peopleListBox.Items.Add(c.Name);
 
+            BackgroundBox.Background = new SolidColorBrush(Color.FromRgb(240, 0, 0));
         }
 
         private void LogIn_Click(object sender, RoutedEventArgs e)
