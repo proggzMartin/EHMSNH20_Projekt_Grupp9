@@ -29,6 +29,7 @@ namespace Store
         public LoginWindow()
         {
             InitializeComponent();
+
             _context = new Context();
 
             var allCustomers = _context.Customers.AsNoTracking().ToList();
@@ -37,10 +38,15 @@ namespace Store
 
             foreach (var c in _customers)
                 peopleListBox.Items.Add(c.Name);
+
         }
 
         private void LogIn_Click(object sender, RoutedEventArgs e)
         {
+
+            
+
+
 
             //PROJ ORIGINAL CODE
             //State.User = API.GetCustomerByName(NameField.Text.Trim());
