@@ -8,7 +8,7 @@
         mc:Ignorable="d" 
         FontSize="18"
         FontFamily="Bahnschrift Condensed"
-        Title="-=LoginWindow=-" Height="450" Width="800">
+        Title="-=Enjoy your freetime=-" Height="450" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
@@ -24,15 +24,13 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="20"/>
-            <RowDefinition Height="150"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="100"/>
             <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="20"/>
 
         </Grid.RowDefinitions>
-        <Border BorderThickness="3" BorderBrush="Red" Grid.ColumnSpan="1" Grid.RowSpan="2" />
+        <TextBlock Name="background"></TextBlock>
         <TextBlock Grid.Row="1" Grid.Column="1">HAJJJJ</TextBlock>
         <TextBlock Grid.Row="0" Grid.Column="1">HALLAU</TextBlock>
         <TextBlock Grid.Row="2" Grid.Column="1" Text="HALLAO döu" Cursor="Arrow" Background="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" FontSize="48" FontWeight="Bold" Foreground="White"/>
