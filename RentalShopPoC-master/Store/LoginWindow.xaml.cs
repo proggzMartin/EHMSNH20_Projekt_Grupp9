@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using DatabaseConnection;
 using Microsoft.EntityFrameworkCore;
+using Store.DTOs;
 
 namespace Store
 {
@@ -22,22 +23,20 @@ namespace Store
     /// </summary>
     public partial class LoginWindow : Window
     {
-        private class CustomerDto
-        {
-            public string Id { get; set; }
-            public string Name { get; set; }
-        }
-
         Context _context;
 
-        List<CustomerDto> namesAndIds = new List<CustomerDto>();
-
+        private List<CustomerNameIdDto> _customers;
         public LoginWindow()
         {
             InitializeComponent();
             _context = new Context();
 
-            //namesAndIds = _context.Customers.Select(x => x.Name && x.Id)
+            var allCustomers = _context.Customers.AsNoTracking().ToList();
+
+            _customers = StoreMapper.projectMapper.Map<List<CustomerNameIdDto>>(allCustomers);
+
+            foreach (var c in _customers)
+                peopleListBox.Items.Add(c.Name);
         }
 
         private void LogIn_Click(object sender, RoutedEventArgs e)
