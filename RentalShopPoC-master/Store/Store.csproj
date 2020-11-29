@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="images\grill.gif" />
+    <None Remove="images\head.png" />
     <None Remove="images\popcorn.gif" />
   </ItemGroup>
 
@@ -20,6 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="images\grill.gif" />
+    <Resource Include="images\head.png" />
     <Resource Include="images\popcorn.gif" />
   </ItemGroup>
 

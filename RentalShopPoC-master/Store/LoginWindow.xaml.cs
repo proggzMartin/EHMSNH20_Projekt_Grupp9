@@ -4,12 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using DatabaseConnection;
 using Microsoft.EntityFrameworkCore;
 using Store.DTOs;
@@ -23,44 +17,66 @@ namespace Store
     /// </summary>
     public partial class LoginWindow : Window
     {
-        Context _context;
+        private Context _context = new Context();
 
-        private List<CustomerNameIdDto> _customers;
+        private const string LOGINERRORMESSAGE = "Angiven användare eller lösenord felaktigt";
+
         public LoginWindow()
         {
             InitializeComponent();
-
-            //_context = new Context();
-
-            //var allCustomers = _context.Customers.AsNoTracking().ToList();
-
-            //_customers = StoreMapper.projectMapper.Map<List<CustomerNameIdDto>>(allCustomers);
-
-            //foreach (var c in _customers)
-            //    peopleListBox.Items.Add(c.Name);
-
-            BackgroundBox.Background = new SolidColorBrush(Color.FromRgb(240, 0, 0));
         }
 
-        private void LogIn_Click(object sender, RoutedEventArgs e)
+        private void LoginButton(object sender, RoutedEventArgs e)
         {
+            Customer inputUser;
+            try
+            {
+                inputUser = GetEnteredCustomer();
+            } catch(ArgumentException ex) //doesn't catch Exception; should be program error.
+            {
+                _DisplayError(ex.Message);
+                return;
+            }
 
-            
-
-
-
-            //PROJ ORIGINAL CODE
-            //State.User = API.GetCustomerByName(NameField.Text.Trim());
-            //if (State.User != null)
-            //{
-            //    var next_window = new MainWindow();
-            //    next_window.Show();
-            //    this.Close();
-            //}
-            //else
-            //{
-            //    NameField.Text = "...";
-            //}
+            if (inputUser.Password.Equals(PasswordField.Password))
+            {
+                var next_window = new MainWindow();
+                next_window.Show();
+                Close();
+            }
+            else
+                _DisplayError();
+    
         }
+
+        private void _DisplayError(string message = LOGINERRORMESSAGE)
+        {
+            ErrorLabel.Content = LOGINERRORMESSAGE;
+            UserNameField.Text = "";
+            PasswordField.Password = "";
+        }
+
+
+
+        /// <summary>
+        /// Throws exception.
+        /// </summary>
+        private Customer GetEnteredCustomer()
+        {
+            var foundUsers = _context.Customers
+                                        .Where(x => x.UserEmail.Equals(UserNameField.Text));
+
+            if (foundUsers == null)
+                throw new ArgumentException(LOGINERRORMESSAGE);
+
+            if (foundUsers.Count() == 0)
+                throw new ArgumentException(LOGINERRORMESSAGE);
+
+            if (foundUsers.Count() > 1)
+                throw new Exception("Fel i databas; fler än 1 användare med samma key.");
+
+            return foundUsers.First();
+        }
+
     }
 }

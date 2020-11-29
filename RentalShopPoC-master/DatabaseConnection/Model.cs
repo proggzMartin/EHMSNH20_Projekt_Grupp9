@@ -7,11 +7,14 @@ namespace DatabaseConnection
 {
     public class Customer
     {
-        public int Id { get; set; }
+        [Key]
         [Required]
-        public string Name { get; set; }
+        public string UserEmail { get; set; }
         [Required]
         public string Password { get; set; }
+
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public virtual List<Rental> Sales { get; set; }
     }
     public class Movie

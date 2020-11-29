@@ -6,8 +6,10 @@
         xmlns:local="clr-namespace:Store"
         xmlns:gif="http://wpfanimatedgif.codeplex.com"
         mc:Ignorable="d" 
-        FontSize="18"
-        FontFamily="Bahnschrift Condensed"
+        FontSize="14"
+        FontFamily="Global User Interface"
+        FontWeight="DemiBold"
+        Foreground="White"
         Title="-=Enjoy your freetime=-" Width="800" Height="450" >
     <Grid>
         <!--<Grid.ColumnDefinitions>
@@ -37,18 +39,84 @@
         <TextBlock Grid.Row="1" Grid.Column="1">HAJJJJ</TextBlock>
         <TextBlock Grid.Row="0" Grid.Column="1">HALLAU</TextBlock>
         <TextBlock Grid.Row="2" Grid.Column="1" Text="HALLAO döu" Cursor="Arrow" Background="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" FontSize="48" FontWeight="Bold" Foreground="White"/>
-        <Image gif:ImageBehavior.AnimatedSource="/images/popcorn.gif" 
-               Grid.Column="2" 
-               Grid.Row="1"
-        />-->
+        -->
+        
         <!--<Image Source="/Images/adderz.png" 
                Grid.Column="2" 
                Grid.Row="1"
                />-->
-        <TextBlock x:Name="BackgroundBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="800" Height="450"></TextBlock>
-        <Label Content="Enter Your Name" HorizontalAlignment="Center" Margin="0,108,0,0" VerticalAlignment="Top"/>
-        <TextBox Name="NameField" HorizontalAlignment="Center" Margin="0,184,0,0" Text="..." TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <Button Click="LogIn_Click" Content="Log In" HorizontalAlignment="Center" Margin="0,246,0,0" VerticalAlignment="Top"/>
+        <TextBlock x:Name="BackgroundBox" 
+            HorizontalAlignment="Left" 
+            VerticalAlignment="Top" 
+            Width="800" 
+            Height="450"
+            Background="#CC0000"/>
 
+        <Label Content="Netflix'n'Grill" 
+               HorizontalAlignment="Center" 
+               VerticalAlignment="Top"
+               Margin="0,75,0,0" 
+               FontSize="32"
+               Foreground="White"/>
+
+        <Image gif:ImageBehavior.AnimatedSource="/images/popcorn.gif" 
+            HorizontalAlignment="Right" 
+            VerticalAlignment="Center" 
+            Width="200" 
+            Height="200"/>
+
+        <Image gif:ImageBehavior.AnimatedSource="/images/grill.gif" 
+            HorizontalAlignment="left" 
+            VerticalAlignment="Center" 
+            Width="200" 
+            Height="200"/>
+
+        <Image gif:ImageBehavior.AnimatedSource="/images/head.png" 
+            HorizontalAlignment="left" 
+            VerticalAlignment="Top" 
+            Width="800" 
+            Height="300"/>
+
+        <!-- 800x450 -->
+        <Label Content="Användarnamn" 
+               HorizontalAlignment="left" 
+               VerticalAlignment="Top"
+               Margin="316,150,0,0" 
+               Foreground="White"/>
+        
+        <TextBox Name="UserNameField" 
+                 HorizontalAlignment="Left" 
+                 VerticalAlignment="Top" 
+                 Margin="320,175,0,0" 
+                 TextWrapping="Wrap" 
+                 Width="150"
+                 Foreground="Black"/>
+
+        <Label Content="Lösenord" 
+               HorizontalAlignment="left" 
+               VerticalAlignment="Top"
+               Margin="316,200,0,0"
+               Foreground="White"/>
+
+        <PasswordBox Name="PasswordField" 
+                 HorizontalAlignment="Left" 
+                 VerticalAlignment="Top" 
+                 Margin="320,225,0,0" 
+                 Width="150"
+                 Foreground="Black"/>
+
+        <Button Click="LoginButton" 
+                HorizontalAlignment="left" 
+                VerticalAlignment="Top"
+                Margin="320,256,0,0" 
+                Content="Logga in"/>
+
+        <Label Name="ErrorLabel"
+               Content="" 
+               HorizontalAlignment="Left" 
+               VerticalAlignment="Top"
+               Margin="320,300,0,0"
+               Foreground="White"/>
+        
     </Grid>
 </Window>

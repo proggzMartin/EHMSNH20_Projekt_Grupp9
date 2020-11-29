@@ -8,26 +8,28 @@ namespace DatabaseConnection
 {
     public static class API
     {
-        static Context ctx;
+        static Context context;
 
         static API()
         {
-            ctx = new Context();
+            context = new Context();
         }
         public static List<Movie> GetMovieSlice(int a, int b)
         {
-            return ctx.Movies.OrderBy(m => m.Title).Skip(a).Take(b).ToList();
+            return context.Movies.OrderBy(m => m.Title).Skip(a).Take(b).ToList();
         }
+
         public static Customer GetCustomerByName(string name)
         {
-            return ctx.Customers.FirstOrDefault(c => c.Name.ToLower() == name.ToLower());
+            return context.Customers.FirstOrDefault(c => c.UserEmail.ToLower() == name.ToLower());
         }
+
         public static bool RegisterSale(Customer customer, Movie movie)
         {
             try
             {
-                ctx.Add(new Rental() { Date = DateTime.Now, Customer = customer, Movie = movie });
-                return ctx.SaveChanges() == 1;
+                context.Add(new Rental() { Date = DateTime.Now, Customer = customer, Movie = movie });
+                return context.SaveChanges() == 1;
             }
             catch(DbUpdateException e)
             {

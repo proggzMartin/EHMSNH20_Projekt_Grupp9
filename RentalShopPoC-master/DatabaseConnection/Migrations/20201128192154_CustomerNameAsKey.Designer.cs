@@ -4,14 +4,16 @@ using DatabaseConnection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DatabaseConnection.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20201128192154_CustomerNameAsKey")]
+    partial class CustomerNameAsKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,20 +23,14 @@ namespace DatabaseConnection.Migrations
 
             modelBuilder.Entity("DatabaseConnection.Customer", b =>
                 {
-                    b.Property<string>("UserEmail")
+                    b.Property<string>("Name")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("UserEmail");
+                    b.HasKey("Name");
 
                     b.ToTable("Customers");
                 });
@@ -64,7 +60,7 @@ namespace DatabaseConnection.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<string>("CustomerUserEmail")
+                    b.Property<string>("CustomerName")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("Date")
@@ -75,7 +71,7 @@ namespace DatabaseConnection.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerUserEmail");
+                    b.HasIndex("CustomerName");
 
                     b.HasIndex("MovieId");
 
@@ -86,7 +82,7 @@ namespace DatabaseConnection.Migrations
                 {
                     b.HasOne("DatabaseConnection.Customer", "Customer")
                         .WithMany("Sales")
-                        .HasForeignKey("CustomerUserEmail");
+                        .HasForeignKey("CustomerName");
 
                     b.HasOne("DatabaseConnection.Movie", "Movie")
                         .WithMany("Sales")

@@ -25,6 +25,12 @@ namespace Store
         {
             InitializeComponent();
 
+
+            //StackPanel s = new StackPanel();
+
+            //var x = s.Children.Add(new Label();
+
+
             State.Movies = API.GetMovieSlice(0, 30);
             for (int y = 0; y < MovieGrid.RowDefinitions.Count; y++)
             {
@@ -74,6 +80,11 @@ namespace Store
                 MessageBox.Show("All is well and you can download your movie now.", "Sale Succeeded!", MessageBoxButton.OK, MessageBoxImage.Information);
             else
                 MessageBox.Show("An error happened while buying the movie, please try again at a later time.", "Sale Failed!", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+        }
+
+        private void Image_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
         }
     }
 }
