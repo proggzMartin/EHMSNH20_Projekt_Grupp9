@@ -40,6 +40,8 @@ namespace Store
 
             if (inputUser.Password.Equals(PasswordField.Password))
             {
+                State.User = inputUser;
+
                 var next_window = new MainWindow();
                 next_window.Show();
                 Close();

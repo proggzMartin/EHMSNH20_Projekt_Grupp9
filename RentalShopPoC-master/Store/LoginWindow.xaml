@@ -71,7 +71,7 @@
             Width="200" 
             Height="200"/>
 
-        <Image gif:ImageBehavior.AnimatedSource="/images/head.png" 
+        <Image Source="/images/head.png"
             HorizontalAlignment="left" 
             VerticalAlignment="Top" 
             Width="800" 

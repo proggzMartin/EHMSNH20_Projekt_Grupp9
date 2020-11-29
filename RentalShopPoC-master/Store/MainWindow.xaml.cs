@@ -25,16 +25,17 @@ namespace Store
         {
             InitializeComponent();
 
-
             //StackPanel s = new StackPanel();
 
             //var x = s.Children.Add(new Label();
 
+            var ingen = State.User;
 
-            State.Movies = API.GetMovieSlice(0, 30);
-            for (int y = 0; y < MovieGrid.RowDefinitions.Count; y++)
+
+            State.Movies = API.GetMovieSlice(0, 40);
+            for (int y = 1; y < MovieGrid.RowDefinitions.Count; y++)
             {
-                for (int x = 0; x < MovieGrid.ColumnDefinitions.Count; x++)
+                for (int x = 1; x < MovieGrid.ColumnDefinitions.Count; x++)
                 {
                     int i = y * MovieGrid.ColumnDefinitions.Count + x;
                     if (i < State.Movies.Count)
