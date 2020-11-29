@@ -17,7 +17,7 @@ namespace DatabaseConnection
                 ctx.RemoveRange(ctx.Customers);
 
                 ctx.AddRange(new List<Customer> {
-                    new Customer { UserEmail = "Björn", Password="Björn" },
+                    new Customer { UserEmail = "Björn", Password="Björn", FirstName = "Björn" },
                     new Customer { UserEmail = "Robin", Password="Robin" },
                     new Customer { UserEmail = "Kalle", Password="Kalle" },
                 });

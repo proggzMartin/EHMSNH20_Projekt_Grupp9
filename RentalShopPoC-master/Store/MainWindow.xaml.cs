@@ -29,8 +29,7 @@ namespace Store
 
             //var x = s.Children.Add(new Label();
 
-            var ingen = State.User;
-
+            GreetUser.Text = $"Välkommen {State.User.FirstName}";
 
             State.Movies = API.GetMovieSlice(0, 40);
             for (int y = 1; y < MovieGrid.RowDefinitions.Count; y++)
