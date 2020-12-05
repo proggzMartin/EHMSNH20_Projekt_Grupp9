@@ -68,14 +68,13 @@ namespace Store
                                 Source = new BitmapImage(new Uri(movie.ImageURL)),
                                 Margin = new Thickness(4, 4, 4, 4)
                             };
-                            image.MouseUp += Image_MouseUp;
                             image.Height = 140;
 
 
                             //Define button properties
                             var button = new Button() { Content = "Hej" };
                             button.Width = 60;
-                            button.MouseUp += ButtonClicked;
+                            button.PreviewMouseUp += UIElementClicked<Button>;
 
 
                             stackPanel.Children.Add(image);
@@ -98,23 +97,25 @@ namespace Store
             }
         }
 
-        private void ButtonClicked(object sender, MouseButtonEventArgs e)
+
+        private void UIElementClicked<T>(object sender, MouseButtonEventArgs e) where T : FrameworkElement
         {
-            throw new NotImplementedException();
-        }
+            if(sender is T)
+            {
+                var stackPanel = (sender as T).Parent;
 
-        private void Image_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            var x = Grid.GetColumn(sender as UIElement);
-            var y = Grid.GetRow(sender as UIElement);
+                var x = Grid.GetColumn(stackPanel as UIElement);
+                var y = Grid.GetRow(stackPanel as UIElement);
 
-            int i = y * MovieGrid.ColumnDefinitions.Count + x;
-            State.Pick = State.Movies[i];
+                int i = y * MovieGrid.ColumnDefinitions.Count + x;
+                State.Pick = State.Movies[i];
 
-            if(API.RegisterSale(State.User, State.Pick))
-                MessageBox.Show("All is well and you can download your movie now.", "Sale Succeeded!", MessageBoxButton.OK, MessageBoxImage.Information);
-            else
-                MessageBox.Show("An error happened while buying the movie, please try again at a later time.", "Sale Failed!", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                if (API.RegisterSale(State.User, State.Pick))
+                    MessageBox.Show("All is well and you can download your movie now.", "Sale Succeeded!", MessageBoxButton.OK, MessageBoxImage.Information);
+                else
+                    MessageBox.Show("An error happened while buying the movie, please try again at a later time.", "Sale Failed!", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
+            
         }
 
         private void Image_MouseDown(object sender, MouseButtonEventArgs e)
