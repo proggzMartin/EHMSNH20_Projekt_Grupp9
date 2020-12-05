@@ -30,15 +30,13 @@ namespace Store
         public AdminWindow()
         {
             InitializeComponent();
-            PopulateCustomerData();
 
-          
-            
+            PopulateCustomerData();
 
         }
 
         
-        private void Button_Click(object sender, RoutedEventArgs e)
+      private void Button_Click(object sender, RoutedEventArgs e)
         {
             
             var _name = CustomerName.Text;
@@ -72,21 +70,33 @@ namespace Store
                 }
             }
         }
-
-
-
+           
+        
 
         private void PopulateCustomerData()
         {
+
             using (Context db = new Context())
             {
-                CustomerGrid.ItemsSource = db.Customers.ToList();
+                var CustomerData = db.Customers.ToList();
+                foreach (var item in CustomerData)
+                {
+                    CustomerList.Items.Add(item);
+                }
+
+
             }
 
         }
-       
-   
 
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
 
+        }
+
+        private void CustomerList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

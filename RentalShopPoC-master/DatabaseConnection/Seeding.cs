@@ -18,7 +18,7 @@ namespace DatabaseConnection
 
                 ctx.AddRange(new List<Customer> {
                     
-                    new Customer { Name = "Björn",    Password =  "Björn" , LastName   = "StrömBerg" },
+                   /* new Customer { Name = "Björn",    Password =  "Björn" , LastName   = "StrömBerg" },
                     new Customer { Name = "Robin",    Password =  "Robin" , LastName   = "Havberg"   },
                     new Customer { Name = "Amanda",   Password =  "Amanda", LastName   = "Åberg"     },
 
@@ -28,7 +28,7 @@ namespace DatabaseConnection
                     new Customer { Name = "Martin",   Password =  "Martin"    ,  LastName   =  "Havberg"   },
                     new Customer { Name = "Ida",      Password =  "Ida"       ,  LastName   =  "Åberg"     },
                     new Customer { Name = "Eva",      Password =  "Eva"       ,  LastName   =  "StrömBerg" }
-
+                   */
                 });
 
                 // Här laddas data in från SeedData foldern för att fylla ut Movies tabellen

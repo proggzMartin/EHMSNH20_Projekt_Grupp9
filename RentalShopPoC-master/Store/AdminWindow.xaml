@@ -6,16 +6,14 @@
         xmlns:local="clr-namespace:Store"
         mc:Ignorable="d"
         Title="AdminWindow" Height="350" Width="525">
-    <Grid Background="Gray">
+    <Grid Background="White">
         
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
-
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="20"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-
             <RowDefinition Height="20"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -23,11 +21,9 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
-            
             <RowDefinition Height="20"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="20"/>
-            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
@@ -41,10 +37,21 @@
         
         <Label FontSize="20" x:Name="PasswordText" Content="Password" Grid.Column="1" Grid.Row="5"></Label>
         <TextBox x:Name="Password" Grid.Column="1" Grid.Row="6"></TextBox>
+        
         <Button  Grid.Column="1" Grid.Row="8" Foreground="Black" Click="Button_Click" Content="Add"></Button>
+        <CheckBox Grid.Column="1" Grid.Row="9" Foreground="Black" Checked="Button_Click_1" Content="Delete" > </CheckBox>
 
-        <DataGrid x:Name="CustomerGrid" Grid.Column="1" Grid.Row="10"></DataGrid>
-
+        <ListView x:Name="CustomerList"  Grid.Column="1" Grid.Row="10">
+            <ListView.View>
+                <GridView>
+                <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}" ></GridViewColumn>
+                <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" ></GridViewColumn>
+                <GridViewColumn Header="LastName" DisplayMemberBinding="{Binding LastName}" ></GridViewColumn>
+                <GridViewColumn Header="Password" DisplayMemberBinding="{Binding Password}" ></GridViewColumn>
+                <GridViewColumn Header="Sales" DisplayMemberBinding="{Binding Sales}"></GridViewColumn>
+            </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
        
  
