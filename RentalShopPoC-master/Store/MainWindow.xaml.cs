@@ -21,6 +21,16 @@ namespace Store
     /// </summary>
     public partial class MainWindow : Window
     {
+        private const int NUMOFCOLS = 4;
+        private const int NUMOFROWS = 6;
+
+        private const int LISTSPACING = 20;
+        private const int LEFTMARGIN = 20;
+        private const int MOVIELISTSTARTY = 120;
+
+
+
+        private List<Movie> _chosenMovies = new List<Movie>();
         public MainWindow()
         {
             InitializeComponent();
@@ -29,12 +39,13 @@ namespace Store
 
             //var x = s.Children.Add(new Label();
 
-            GreetUser.Text = $"Välkommen {State.User.FirstName}";
+            GreetText.Text = $"Välkommen {State.User.FirstName}";
 
             State.Movies = API.GetMovieSlice(0, 40);
-            for (int y = 1; y < MovieGrid.RowDefinitions.Count; y++)
+
+            for (int y = 1; y < NUMOFROWS; y++)
             {
-                for (int x = 1; x < MovieGrid.ColumnDefinitions.Count; x++)
+                for (int x = 1; x <= NUMOFCOLS; x++)
                 {
                     int i = y * MovieGrid.ColumnDefinitions.Count + x;
                     if (i < State.Movies.Count)
@@ -43,18 +54,37 @@ namespace Store
 
                         try
                         {
-                            var image = new Image() { };
-                            image.Cursor = Cursors.Hand;
-                            image.MouseUp += Image_MouseUp;
-                            image.HorizontalAlignment = HorizontalAlignment.Center;
-                            image.VerticalAlignment = VerticalAlignment.Center;
-                            image.Source = new BitmapImage(new Uri(movie.ImageURL));
-                            //image.Height = 120;
-                            image.Margin = new Thickness(4, 4, 4, 4);
+                            var stackPanel = new StackPanel()
+                            {
+                                Orientation = Orientation.Vertical
+                            };
 
-                            MovieGrid.Children.Add(image);
-                            Grid.SetRow(image, y);
-                            Grid.SetColumn(image, x);
+
+                            //Define image properties
+                            var image = new Image() {
+                                Cursor = Cursors.Hand,
+                                HorizontalAlignment = HorizontalAlignment.Center,
+                                VerticalAlignment = VerticalAlignment.Stretch,
+                                Source = new BitmapImage(new Uri(movie.ImageURL)),
+                                Margin = new Thickness(4, 4, 4, 4)
+                            };
+                            image.MouseUp += Image_MouseUp;
+                            image.Height = 140;
+
+
+                            //Define button properties
+                            var button = new Button() { Content = "Hej" };
+                            button.Width = 60;
+                            button.MouseUp += ButtonClicked;
+
+
+                            stackPanel.Children.Add(image);
+                            stackPanel.Children.Add(button);
+
+                            MovieGrid.Children.Add(stackPanel);
+                            Grid.SetRow(stackPanel, y);
+                            Grid.SetColumn(stackPanel, x);
+
                         }
                         catch (Exception e) when 
                             (e is ArgumentNullException || 
@@ -66,6 +96,11 @@ namespace Store
                     }
                 }
             }
+        }
+
+        private void ButtonClicked(object sender, MouseButtonEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         private void Image_MouseUp(object sender, MouseButtonEventArgs e)

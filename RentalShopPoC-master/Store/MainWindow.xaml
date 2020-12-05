@@ -23,29 +23,73 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="45" />
-                <RowDefinition Height="140" />
-                <RowDefinition Height="140" />
-                <RowDefinition Height="140" />
-                <RowDefinition Height="140" />
-                <RowDefinition Height="140" />
-                <RowDefinition Height="140" />
-                <RowDefinition Height="140" />
-                <RowDefinition Height="140" />
-                <RowDefinition Height="140" />
-                <RowDefinition Height="140" />
+                <RowDefinition Height="180" />
+                <RowDefinition Height="180" />
+                <RowDefinition Height="180" />
+                <RowDefinition Height="180" />
+                <RowDefinition Height="180" />
+                <RowDefinition Height="180" />
+                <RowDefinition Height="180" />
+                <RowDefinition Height="180" />
+                <RowDefinition Height="180" />
+                <RowDefinition Height="180" />
             </Grid.RowDefinitions>
             <Image Source="/images/head.png"
                     Grid.Column="0"
                     Grid.Row="0"
                     Grid.ColumnSpan="5"/>
-            <TextBlock x:Name="GreetUser" 
+
+            <TextBlock x:Name="GreetText" 
                 Grid.Row="1"
-                HorizontalAlignment="center"
+                HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                Margin="0,41,0,0"
+                Margin="20,60,0,0"
                 Foreground="White"
                 >Välkommen, Märit</TextBlock>
-            <TextBlock HorizontalAlignment="Left" Margin="29,41,0,0" Grid.Row="2" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top"/>
+
+            <TextBlock 
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Top"
+                Margin="20,100,0,0"
+                Grid.Row="1" 
+                Text="Valda filmer:" 
+                TextWrapping="Wrap" />
         </Grid>
+
+        <!--<Canvas Background="#CC0000" Width="800" Height="800">
+            <Image Source="/images/head.png"/>
+            <TextBox Margin="100, 600" Text="hej"></TextBox>
+
+            <TextBlock x:Name="GreetText" 
+                Grid.Row="1"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Margin="20,60,0,0"
+                Foreground="White"
+                FontSize="22"
+                >Välkommen, Märit</TextBlock>
+            
+            <TextBlock 
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Margin="20,100"
+                Text="Valda filmer:" 
+                TextWrapping="Wrap"/>
+            <TextBlock 
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Margin="20,120"
+                Text="Film1" 
+                TextWrapping="Wrap"/>
+            
+            <TextBlock 
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Margin="20,140"
+                Text="Film2" 
+                TextWrapping="Wrap"/>-->
+
+            
+        <!--</Canvas>-->
     </ScrollViewer>
 </Window>
