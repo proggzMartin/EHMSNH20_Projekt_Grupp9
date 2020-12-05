@@ -1,17 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using DatabaseConnection;
 
 namespace Store
@@ -21,37 +14,48 @@ namespace Store
     /// </summary>
     public partial class MainWindow : Window
     {
-        private const int NUMOFCOLS = 4;
-        private const int NUMOFROWS = 6;
-
-        private const int LISTSPACING = 20;
-        private const int LEFTMARGIN = 20;
-        private const int MOVIELISTSTARTY = 120;
-
-
         //Knapp kan ha 3 lägen; uthyrd, hyra, vald.
         public enum MovieSelection
         {
-            Hyr, Vald, Rented
+            Hyr, Vald, Uthyrd
         }
         private class MovieDto
         {
-            public MovieSelection Status { get; set; } = MovieSelection.Hyr;
+            public MovieSelection Status { get; private set; } = MovieSelection.Hyr;
             public Movie TargetMovie { get; set; }
             public MovieDto(Movie movie, Customer activeCustomer)
             {
                 TargetMovie = movie;
 
-                if(_isRented(activeCustomer))
+                if(IsRented(activeCustomer))
                 {
-                    Status = MovieSelection.Rented;
+                    Status = MovieSelection.Uthyrd;
                 }
             }
-            private bool _isRented(Customer activeCustomer)
+            public bool IsRented(Customer activeCustomer)
             {
-                return TargetMovie.Sales.Any(x => x.Customer.UserEmail.Equals(activeCustomer.UserEmail));
+                var x = TargetMovie.Sales.Any(x => x.Customer.UserEmail.Equals(activeCustomer.UserEmail));
+                return x;
+            }
+
+            public void SetStatus()
+            {
+                if (!IsRented(State.User))
+                    if (Status == MovieSelection.Hyr)
+                        Status = MovieSelection.Vald;
+                    else
+                        Status = MovieSelection.Hyr;
             }
         }
+
+
+        private const int NUMOFCOLS = 4;
+        private const int NUMOFROWS = 6;
+
+        
+
+        private List<MovieDto> movies = new List<MovieDto>();
+        private List<MovieDto> selectedMovies = new List<MovieDto>();
 
         public MainWindow()
         {
@@ -59,9 +63,6 @@ namespace Store
 
             GreetText.Text = $"Välkommen {State.User.FirstName}";
 
-            //State.Movies = API.GetMovieSlice(0, 40)
-
-            List<MovieDto> movies = new List<MovieDto>();
 
             foreach(var m in API.GetMovieSlice(0,40))
             {
@@ -101,8 +102,12 @@ namespace Store
                             //{
 
                             //}
+
                             var button = new Button();
                             button.Content = movie.Status.ToString();
+                            if (movie.IsRented(State.User))
+                                button.IsEnabled = false;
+
                             button.Width = 60;
                             button.PreviewMouseUp += ButtonClicked;
 
@@ -127,47 +132,42 @@ namespace Store
             }
         }
 
-        private bool _isRented(Movie movie)
-        {
-            var x = movie.Sales.Any(x => x.Customer.UserEmail.Equals(State.User.UserEmail));
-            return movie.Sales.Any(x => x.Customer.UserEmail.Equals(State.User.UserEmail));
-        }
-
-        private void _setMovieStatus(Movie movie)
-        {
-            
-        }
-
         private void _rentMovies(Movie[] movies)
         {
             throw new NotImplementedException();
         }
 
+
+        private const int LISTSPACING = 20;
+        private const int LEFTMARGIN = 20;
+        private const int SELECTEDMOVIELISTSTARTY = 120;
+        private const string MOVIEIDPREFIX = "ID";
+
         private void ButtonClicked(object sender, MouseButtonEventArgs e) 
         {
             if(sender is Button)
             {
+                var buttonParentStackPanel = (sender as Button).Parent;
+                var x = Grid.GetColumn(buttonParentStackPanel as UIElement);
+                var y = Grid.GetRow(buttonParentStackPanel as UIElement);
 
-                var stackPanel = (sender as Button).Parent;
-
-                var x = Grid.GetColumn(stackPanel as UIElement);
-                var y = Grid.GetRow(stackPanel as UIElement);
-
-                int i = y * MovieGrid.ColumnDefinitions.Count + x;
-
-                State.Pick = State.Movies[i];
-
-                (sender as Button).Content = "Vald";
+                //int i = y * MovieGrid.ColumnDefinitions.Count + x;
+                var selectedMovie = movies[y * MovieGrid.ColumnDefinitions.Count + x];
 
 
+                //Behöver kolla om redan vald.
+                //Behöver kunna plocka bort.
+                //Behöver se till så redan hyrda inte går att klicka.
+                selectedMovie.SetStatus();
 
-                //if (API.RegisterSale(State.User, State.Pick))
-                //    MessageBox.Show("All is well and you can download your movie now.", "Sale Succeeded!", MessageBoxButton.OK, MessageBoxImage.Information);
-                //else
-                //    MessageBox.Show("An error happened while buying the movie, please try again at a later time.", "Sale Failed!", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                (sender as Button).Content = selectedMovie.Status.ToString();
+                selectedMovies.Add(selectedMovie);
+
+                ChosenMoviesStack.Children.Add(new TextBox() { 
+                    Name = MOVIEIDPREFIX+selectedMovie.TargetMovie.Id.ToString(), //Will be used for removing movie.
+                    Text = selectedMovie.TargetMovie.Title
+                });
             }
         }
-
-        
     }
 }

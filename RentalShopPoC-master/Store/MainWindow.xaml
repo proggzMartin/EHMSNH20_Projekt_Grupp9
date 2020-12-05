@@ -47,13 +47,22 @@
                 Foreground="White"
                 >Välkommen, Märit</TextBlock>
 
-            <TextBlock 
+            <TextBlock
                 HorizontalAlignment="Left" 
                 VerticalAlignment="Top"
                 Margin="20,100,0,0"
                 Grid.Row="1" 
                 Text="Valda filmer:" 
                 TextWrapping="Wrap" />
+            <ScrollViewer
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Top"
+                Margin="20,120,0,0"
+                Grid.Row="1">
+                <StackPanel x:Name="ChosenMoviesStack">
+
+                </StackPanel>
+            </ScrollViewer>
         </Grid>
 
         <!--<Canvas Background="#CC0000" Width="800" Height="800">
