@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 
+
 namespace DatabaseConnection
 {
     public class Context : DbContext
@@ -24,6 +25,7 @@ namespace DatabaseConnection
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            
         }
     }
 }
