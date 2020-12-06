@@ -19,6 +19,11 @@ namespace DatabaseConnection
             return context.Movies.OrderBy(m => m.Title).Skip(a).Take(b).ToList();
         }
 
+        public static int GetNumOfMovies()
+        {
+            return context.Movies.Count();
+        }
+
         public static Customer GetCustomerByName(string name)
         {
             return context.Customers.FirstOrDefault(c => c.UserEmail.ToLower() == name.ToLower());
@@ -45,6 +50,19 @@ namespace DatabaseConnection
 
             var x = m.Sales.Any(x => x.Customer.UserEmail.Equals(activeCustomer.UserEmail));
             return x;
+        }
+
+        public static void RentMovie(Customer activeCustomer, int movieId)
+        {
+            var customer = context.Customers
+                            .FirstOrDefault(x => x.UserEmail.Equals(activeCustomer.UserEmail)) //select customer on primary key.
+                                ?? throw new Exception("Customer doesn't exist.");
+
+            customer.Sales?.Add(new Rental()
+            {
+                MovieId = movieId
+            });
+            context.SaveChanges();
         }
 
     }

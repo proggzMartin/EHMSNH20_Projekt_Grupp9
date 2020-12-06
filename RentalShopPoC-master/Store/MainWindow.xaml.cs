@@ -117,20 +117,20 @@ namespace Store
 
                 {MovieSelection.Hyr,
                         ( buttonText: MovieSelection.Hyr.ToString(),
-                          buttonBackgroundColor: new SolidColorBrush(Color.FromArgb(0xFF, 0x00, 0xCC, 0x00)),
+                          buttonBackgroundColor: new SolidColorBrush(Color.FromRgb(0x00, 0xCC, 0x00)),
                           buttonTextColor: new SolidColorBrush(Color.FromRgb(255,255,255))
                         )
                 },
                 {MovieSelection.Vald,
                         ( buttonText: MovieSelection.Vald.ToString(),
-                          buttonBackgroundColor: new SolidColorBrush(Color.FromArgb(0xFF, 0x22, 0x74, 0xA5)),
+                          buttonBackgroundColor: new SolidColorBrush(Color.FromRgb(0x22, 0x74, 0xA5)),
                           buttonTextColor: new SolidColorBrush(Color.FromRgb(255,255,255))
                         )
                 },
                 {MovieSelection.Uthyrd,
                         ( buttonText: MovieSelection.Uthyrd.ToString(),
-                          buttonBackgroundColor: new SolidColorBrush(Color.FromArgb(0xFF, 0xCC, 0, 0)),
-                          buttonTextColor: new SolidColorBrush(Color.FromRgb(255,255,255))
+                          buttonBackgroundColor: new SolidColorBrush(Color.FromRgb(0xCC, 0, 0)),
+                          buttonTextColor: new SolidColorBrush(Color.FromRgb(0,0,0))
                         )
                 }
                 };
@@ -188,9 +188,11 @@ namespace Store
             }
         }
 
-
         private const int NUMOFCOLS = 3;
-        private const int NUMOFROWS = 6;
+        private const int NUMOFROWS = 3;
+        private const int SLICESIZE = 18;
+        private int pageIndex = 0;
+
 
         private List<SelectMovieContainer> moviesForRent = new List<SelectMovieContainer>();
         
@@ -198,13 +200,20 @@ namespace Store
         {
             InitializeComponent();
             RentMoviesButton.Visibility = Visibility.Hidden;
+            RentMoviesButton.PreviewMouseUp += _rentMovies;
+
+            LogoutButton.PreviewMouseUp += _logout;
+
+            PageDisplay.Text = $"Sida {pageIndex} of {Math.Ceiling((double)API.GetNumOfMovies() / (double)(NUMOFCOLS * NUMOFROWS))}"; //round up to nearest integer
+
+            PageSelector.PreviewKeyUp += _changePage;
 
             GreetText.Text = $"Välkommen {State.User.FirstName}";
 
-            foreach(var m in API.GetMovieSlice(0,40))
-                moviesForRent.Add(new SelectMovieContainer(m, ButtonClicked));
+            _setMoviesForRent(pageIndex);
+            
 
-            for (int y = 1; y < NUMOFROWS; y++)
+            for (int y = 1; y <= NUMOFROWS; y++)
             {
                 for (int x = 1; x <= NUMOFCOLS; x++)
                 {
@@ -214,7 +223,6 @@ namespace Store
                         try
                         {
                             moviesForRent[i].AddStackToGridLocation(ref MovieGrid, x, y);
-
                         }
                         catch (Exception e) when 
                             (e is ArgumentNullException || 
@@ -228,9 +236,47 @@ namespace Store
             }
         }
 
-        private void _rentMovies(Movie[] movies)
+        private void _changePage(object sender, KeyEventArgs e)
         {
-            throw new NotImplementedException();
+            if (e.Key != System.Windows.Input.Key.Enter) 
+                return;
+
+            int x;
+
+            if (int.TryParse(PageSelector.Text, out x))
+            {
+                //load correct page.
+            }
+        }
+
+
+        private void _logout(object sender, MouseButtonEventArgs e)
+        {
+            State.User = null;
+
+            var next_window = new LoginWindow();
+            next_window.Show();
+            Close();
+        }
+
+        private void _setMoviesForRent(int page)
+        {
+            moviesForRent = new List<SelectMovieContainer>(); //reload
+
+            foreach (var m in API.GetMovieSlice(pageIndex, SLICESIZE))
+                moviesForRent.Add(new SelectMovieContainer(m, ButtonClicked));
+        }
+
+        private void _rentMovies(object sender, MouseButtonEventArgs e)
+        {
+            ChosenMoviesStack.Children.Clear();
+
+            var movieIds = selectedMovies.Select(sm => sm.Key.TargetMovie.Id).ToList();
+
+            foreach(var movieId in movieIds)
+                API.RentMovie(State.User, movieId);
+            //_setMoviesForRent();
+
         }
 
         private Dictionary<MovieDto, UIElement> selectedMovies = new Dictionary<MovieDto, UIElement>();
@@ -273,7 +319,8 @@ namespace Store
                 selectedMovie.SwitchHiredStatus();
 
                 //(sender as Button).Content = selectedMovie.movieDto.Status.ToString();
-            }
+            } else 
+                throw new Exception("ButtonClicked used by component that shouldn't");
         }
     }
 }
