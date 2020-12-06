@@ -15,7 +15,7 @@
         <Grid Name="MovieGrid" 
               Background="#CC0000">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition />
+                <!--<ColumnDefinition />-->
                 <ColumnDefinition />
                 <ColumnDefinition />
                 <ColumnDefinition />
@@ -43,28 +43,36 @@
                 Grid.Row="1"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                Margin="20,60,0,0"
+                Margin="20,5,0,0"
                 Foreground="White"
                 >Välkommen, Märit</TextBlock>
 
             <TextBlock
                 HorizontalAlignment="Left" 
                 VerticalAlignment="Top"
-                Margin="20,100,0,0"
+                Margin="20,25,0,0"
                 Grid.Row="1" 
                 Text="Valda filmer:" 
                 TextWrapping="Wrap" />
             <ScrollViewer x:Name="ChosenMovieScrollViewer"
                 HorizontalAlignment="Left" 
                 VerticalAlignment="Top"
-                Margin="20,120,0,0"
+                Margin="20,45,0,0"
                 Grid.Row="1"
-                Visibility="Hidden">
+                Visibility="Visible">
                 <StackPanel x:Name="ChosenMoviesStack" 
 >
 
                 </StackPanel>
             </ScrollViewer>
+
+            <Button x:Name="RentMoviesButton"
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Top"
+                Margin="20,10,0,0"
+                Grid.Row="2"
+                Grid.Column="0"
+                Content="Hyr valda filmer"/>
         </Grid>
             
 
