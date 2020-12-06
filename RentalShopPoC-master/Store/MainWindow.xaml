@@ -54,12 +54,14 @@
                 Grid.Row="1" 
                 Text="Valda filmer:" 
                 TextWrapping="Wrap" />
-            <ScrollViewer
+            <ScrollViewer x:Name="ChosenMovieScrollViewer"
                 HorizontalAlignment="Left" 
                 VerticalAlignment="Top"
                 Margin="20,120,0,0"
-                Grid.Row="1">
-                <StackPanel x:Name="ChosenMoviesStack">
+                Grid.Row="1"
+                Visibility="Hidden">
+                <StackPanel x:Name="ChosenMoviesStack" 
+>
 
                 </StackPanel>
             </ScrollViewer>

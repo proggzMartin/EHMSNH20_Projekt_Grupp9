@@ -152,6 +152,9 @@ namespace Store
                 {
                     ChosenMoviesStack.Children.Remove(selectedMovies[selectedMovie]);
                     selectedMovies.Remove(selectedMovie);
+                    if(ChosenMoviesStack.Children.Count < 1)
+                        ChosenMovieScrollViewer.Visibility = Visibility.Hidden;
+
                 }
                 else if (selectedMovie.Status == MovieSelection.Hyr)
                 {
@@ -161,6 +164,7 @@ namespace Store
                         Text = selectedMovie.TargetMovie.Title
                     });
                     ChosenMoviesStack.Children.Add(selectedMovies[selectedMovie]);
+                    ChosenMovieScrollViewer.Visibility = Visibility.Visible;
                 }
                 else
                     throw new Exception("Hiring logic invalid ; Unexpected error occured.");
