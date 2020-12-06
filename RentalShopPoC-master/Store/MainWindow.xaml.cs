@@ -43,6 +43,39 @@ namespace Store
             }
         }
 
+        private class ButtonContainer
+        {
+            private static readonly Dictionary<MovieSelection, string> _buttonStatuses = new Dictionary<MovieSelection, string>() {
+                {MovieSelection.Hyr, MovieSelection.Hyr.ToString() },
+                {MovieSelection.Vald, MovieSelection.Vald.ToString() },
+                {MovieSelection.Uthyrd, MovieSelection.Uthyrd.ToString() }
+            };
+            private const int _BUTTONWIDTH = 60;
+
+            private Button _targetButton;
+
+            public ButtonContainer(MovieDto belongingMovie, MouseButtonEventHandler mouseButtonEventHandler)
+            {
+                _targetButton = new Button();
+
+                if (API.IsRentedByCustomer(State.User, belongingMovie.TargetMovie.Id))
+                    _targetButton.IsEnabled = false;
+
+                _targetButton.Content = _buttonStatuses[belongingMovie.Status];
+
+                _targetButton.Width = _BUTTONWIDTH;
+
+                _targetButton.PreviewMouseUp += mouseButtonEventHandler;
+            }
+
+            public void AddToStackpanel(ref StackPanel stack) { 
+
+                if(!stack.Children.Contains(_targetButton))
+
+                    stack.Children.Add(_targetButton); 
+            }
+        }
+
 
         private const int NUMOFCOLS = 4;
         private const int NUMOFROWS = 6;
@@ -89,19 +122,13 @@ namespace Store
                             };
                             image.Height = 140;
 
+                            stackPanel.Children.Add(image);
+
 
                             //Define button properties
-                            var button = new Button();
-                            button.Content = movies[i].Status.ToString();
-                            if (API.IsRentedByCustomer(State.User, movies[i].TargetMovie.Id))
-                                button.IsEnabled = false;
+                            var buttonContainer = new ButtonContainer(movies[i], ButtonClicked);
 
-                            button.Width = 60;
-                            button.PreviewMouseUp += ButtonClicked;
-
-
-                            stackPanel.Children.Add(image);
-                            stackPanel.Children.Add(button);
+                            buttonContainer.AddToStackpanel(ref stackPanel);
 
                             MovieGrid.Children.Add(stackPanel);
                             Grid.SetRow(stackPanel, y);
@@ -154,7 +181,6 @@ namespace Store
                     selectedMovies.Remove(selectedMovie);
                     if(ChosenMoviesStack.Children.Count < 1)
                         ChosenMovieScrollViewer.Visibility = Visibility.Hidden;
-
                 }
                 else if (selectedMovie.Status == MovieSelection.Hyr)
                 {

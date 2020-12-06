@@ -65,42 +65,9 @@
 
                 </StackPanel>
             </ScrollViewer>
+
         </Grid>
-
-        <!--<Canvas Background="#CC0000" Width="800" Height="800">
-            <Image Source="/images/head.png"/>
-            <TextBox Margin="100, 600" Text="hej"></TextBox>
-
-            <TextBlock x:Name="GreetText" 
-                Grid.Row="1"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Margin="20,60,0,0"
-                Foreground="White"
-                FontSize="22"
-                >Välkommen, Märit</TextBlock>
             
-            <TextBlock 
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Margin="20,100"
-                Text="Valda filmer:" 
-                TextWrapping="Wrap"/>
-            <TextBlock 
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Margin="20,120"
-                Text="Film1" 
-                TextWrapping="Wrap"/>
-            
-            <TextBlock 
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Margin="20,140"
-                Text="Film2" 
-                TextWrapping="Wrap"/>-->
 
-            
-        <!--</Canvas>-->
     </ScrollViewer>
 </Window>
