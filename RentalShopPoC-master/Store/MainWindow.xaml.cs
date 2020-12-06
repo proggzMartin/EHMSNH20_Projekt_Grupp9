@@ -199,6 +199,13 @@ namespace Store
         public MainWindow()
         {
             InitializeComponent();
+            _initAll();
+        }
+
+        private void _initAll()
+        {
+            //BEHÖVER SLÄNGA IN ALLA DEFINITIONER HÄR FÖR ATT FÅ ETT RESET-BETEENDE!
+
             RentMoviesButton.Visibility = Visibility.Hidden;
             RentMoviesButton.PreviewMouseUp += _rentMovies;
 
@@ -211,7 +218,7 @@ namespace Store
             GreetText.Text = $"Välkommen {State.User.FirstName}";
 
             _setMoviesForRent(pageIndex);
-            
+
 
             for (int y = 1; y <= NUMOFROWS; y++)
             {
@@ -224,9 +231,9 @@ namespace Store
                         {
                             moviesForRent[i].AddStackToGridLocation(ref MovieGrid, x, y);
                         }
-                        catch (Exception e) when 
-                            (e is ArgumentNullException || 
-                             e is System.IO.FileNotFoundException || 
+                        catch (Exception e) when
+                            (e is ArgumentNullException ||
+                             e is System.IO.FileNotFoundException ||
                              e is UriFormatException)
                         {
                             continue;
@@ -234,6 +241,12 @@ namespace Store
                     }
                 }
             }
+        }
+
+        private void _reload()
+        {
+            MovieGrid.Children.Clear();
+            _initAll();
         }
 
         private void _changePage(object sender, KeyEventArgs e)
@@ -246,6 +259,10 @@ namespace Store
             if (int.TryParse(PageSelector.Text, out x))
             {
                 //load correct page.
+                //is index inside spectrum?
+                //change appearance of pagenumber - pageIndex
+
+                _reload();
             }
         }
 
