@@ -27,20 +27,15 @@ namespace Store
             {
                 TargetMovie = movie;
 
-                if(IsRented(activeCustomer))
+                if(API.IsRentedByCustomer(State.User, TargetMovie.Id))
                 {
                     Status = MovieSelection.Uthyrd;
                 }
             }
-            public bool IsRented(Customer activeCustomer)
-            {
-                var x = TargetMovie.Sales.Any(x => x.Customer.UserEmail.Equals(activeCustomer.UserEmail));
-                return x;
-            }
 
-            public void SetStatus()
+            public void SwitchHiredStatus()
             {
-                if (!IsRented(State.User))
+                if (!API.IsRentedByCustomer(State.User, TargetMovie.Id) )
                     if (Status == MovieSelection.Hyr)
                         Status = MovieSelection.Vald;
                     else
@@ -55,8 +50,8 @@ namespace Store
         
 
         private List<MovieDto> movies = new List<MovieDto>();
-        private List<MovieDto> selectedMovies = new List<MovieDto>();
 
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -76,7 +71,7 @@ namespace Store
                     int i = y * MovieGrid.ColumnDefinitions.Count + x;
                     if (i < movies.Count)
                     {
-                        var movie = movies[i];
+                        
                         try
                         {
                             var stackPanel = new StackPanel()
@@ -89,23 +84,16 @@ namespace Store
                                 Cursor = Cursors.Hand,
                                 HorizontalAlignment = HorizontalAlignment.Center,
                                 VerticalAlignment = VerticalAlignment.Stretch,
-                                Source = new BitmapImage(new Uri(movie.TargetMovie.ImageURL)),
+                                Source = new BitmapImage(new Uri(movies[i].TargetMovie.ImageURL)),
                                 Margin = new Thickness(4, 4, 4, 4)
                             };
                             image.Height = 140;
 
 
                             //Define button properties
-
-                            //See if movie is already rented
-                            //if(_isRented(movie))
-                            //{
-
-                            //}
-
                             var button = new Button();
-                            button.Content = movie.Status.ToString();
-                            if (movie.IsRented(State.User))
+                            button.Content = movies[i].Status.ToString();
+                            if (API.IsRentedByCustomer(State.User, movies[i].TargetMovie.Id))
                                 button.IsEnabled = false;
 
                             button.Width = 60;
@@ -143,6 +131,8 @@ namespace Store
         private const int SELECTEDMOVIELISTSTARTY = 120;
         private const string MOVIEIDPREFIX = "ID";
 
+        private Dictionary<MovieDto, UIElement> selectedMovies = new Dictionary<MovieDto, UIElement>();
+
         private void ButtonClicked(object sender, MouseButtonEventArgs e) 
         {
             if(sender is Button)
@@ -158,15 +148,26 @@ namespace Store
                 //Behöver kolla om redan vald.
                 //Behöver kunna plocka bort.
                 //Behöver se till så redan hyrda inte går att klicka.
-                selectedMovie.SetStatus();
+                if (selectedMovie.Status == MovieSelection.Vald)
+                {
+                    ChosenMoviesStack.Children.Remove(selectedMovies[selectedMovie]);
+                    selectedMovies.Remove(selectedMovie);
+                }
+                else if (selectedMovie.Status == MovieSelection.Hyr)
+                {
+                    selectedMovies.Add(selectedMovie, new TextBox()
+                    {
+                        //Name = MOVIEIDPREFIX + selectedMovie.TargetMovie.Id.ToString(), //Will be used for removing movie.
+                        Text = selectedMovie.TargetMovie.Title
+                    });
+                    ChosenMoviesStack.Children.Add(selectedMovies[selectedMovie]);
+                }
+                else
+                    throw new Exception("Hiring logic invalid ; Unexpected error occured.");
 
+                selectedMovie.SwitchHiredStatus();
                 (sender as Button).Content = selectedMovie.Status.ToString();
-                selectedMovies.Add(selectedMovie);
 
-                ChosenMoviesStack.Children.Add(new TextBox() { 
-                    Name = MOVIEIDPREFIX+selectedMovie.TargetMovie.Id.ToString(), //Will be used for removing movie.
-                    Text = selectedMovie.TargetMovie.Title
-                });
             }
         }
     }

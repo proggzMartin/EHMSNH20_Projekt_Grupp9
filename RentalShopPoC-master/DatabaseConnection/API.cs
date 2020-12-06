@@ -38,5 +38,14 @@ namespace DatabaseConnection
                 return false;
             }
         }
+
+        public static bool IsRentedByCustomer(Customer activeCustomer, int movieId)
+        {
+            var m = context.Movies.FirstOrDefault(x => x.Id.Equals(movieId)) ?? throw new Exception("Movie doesn't exist.");
+
+            var x = m.Sales.Any(x => x.Customer.UserEmail.Equals(activeCustomer.UserEmail));
+            return x;
+        }
+
     }
 }
