@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using DatabaseConnection;
 
@@ -19,7 +20,7 @@ namespace Store
         {
             Hyr, Vald, Uthyrd
         }
-        private class MovieDto
+        public class MovieDto
         {
             public MovieSelection Status { get; private set; } = MovieSelection.Hyr;
             public Movie TargetMovie { get; set; }
@@ -51,73 +52,139 @@ namespace Store
 
         private class SelectMovieContainer {
 
-            private UIElement _targetUIElement { get; set; }
+            public MovieDto movieDto { get; set; }
 
-            protected UIElement TargetUIElement { get { return _targetUIElement; } } //can/should only be added in this class constructor.
+            private MovieImageContainer _imageContainer;
+            private MovieButtonContainer _buttonContainer;
+            private StackPanel _stackPanel;
 
             /// <summary>
             /// 
             /// </summary>
             /// <param name="targetElement">The element to be contained by the selectmovie-box.</param>
             /// <param name="stack">The stackpanel the element shall belong to.</param>
-            public SelectMovieContainer(UIElement targetElement, ref StackPanel stack)
+            public SelectMovieContainer(Movie movie, MouseButtonEventHandler mouseButtonEventHandler)
             {
-                _targetUIElement = targetElement;
+                if (!_TargetMovieIsValid(movie))
+                    throw new Exception("Invalid use o SelectMovieContainer.");
 
-                if (!stack.Children.Contains(_targetUIElement))
-                    stack.Children.Add(_targetUIElement);
-            }
-        }
+                movieDto = new MovieDto(movie, State.User);
 
-        private class MovieButtonContainer : SelectMovieContainer
-        {
-            private static readonly Dictionary<MovieSelection, string> _buttonStatuses = new Dictionary<MovieSelection, string>() {
-                {MovieSelection.Hyr, MovieSelection.Hyr.ToString() },
-                {MovieSelection.Vald, MovieSelection.Vald.ToString() },
-                {MovieSelection.Uthyrd, MovieSelection.Uthyrd.ToString() }
-            };
-
-            private const int _BUTTONWIDTH = 60;
-
-            //private Button _targetButton; //Can only be reached by the handler.
-
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="belongingMovie"></param>
-            /// <param name="mouseButtonEventHandler"></param>
-            /// <param name="stack"></param>
-            public MovieButtonContainer(MovieDto belongingMovie, 
-                                        MouseButtonEventHandler mouseButtonEventHandler,
-                                        ref StackPanel stack) : base(new Button(), ref stack)
-            {
-
-                if (API.IsRentedByCustomer(State.User, belongingMovie.TargetMovie.Id))
-                    TargetUIElement.IsEnabled = false;
-
-                (TargetUIElement as Button).Content = _buttonStatuses[belongingMovie.Status];
-
-                (TargetUIElement as Button).Width = _BUTTONWIDTH;
-
-                (TargetUIElement as Button).PreviewMouseUp += mouseButtonEventHandler;
-            }
-        }
-
-        private class MovieImageContainer
-        {
-            private Image _targetImage;
-
-            public MovieImageContainer()
-            {
-                var image = new Image()
+                _stackPanel = new StackPanel()
                 {
-                    Cursor = Cursors.Hand,
-                    HorizontalAlignment = HorizontalAlignment.Center,
-                    VerticalAlignment = VerticalAlignment.Stretch,
-                    Source = new BitmapImage(new Uri(movies[i].TargetMovie.ImageURL)),
-                    Margin = new Thickness(4, 4, 4, 4)
+                    Orientation = Orientation.Vertical
                 };
-                image.Height = 140;
+
+                _imageContainer = new MovieImageContainer(movieDto);
+                _imageContainer.AddToStack(ref _stackPanel);
+
+                _buttonContainer = new MovieButtonContainer(movieDto, mouseButtonEventHandler);
+                _buttonContainer.AddToStack(ref _stackPanel);
+            }
+
+            private bool _TargetMovieIsValid(Movie movie)
+            {
+                if (movie == null ||
+                   movie.Id < 0 ||
+                   string.IsNullOrEmpty(movie.ImageURL) ||
+                   string.IsNullOrEmpty(movie.Title))
+                    return false;
+                return true;
+            }
+
+            public void AddStackToGridLocation(ref Grid MovieGrid, int x, int y)
+            {
+                MovieGrid.Children.Add(_stackPanel);
+                Grid.SetRow(_stackPanel, y);
+                Grid.SetColumn(_stackPanel, x);
+            }
+
+            public void SwitchHiredStatus()
+            {
+                movieDto.SwitchHiredStatus();
+                _buttonContainer.SetAppearance(movieDto);
+            }
+
+            private interface MovieContainerElement
+            {
+                public void AddToStack(ref StackPanel stack);
+            }
+
+            private class MovieButtonContainer : MovieContainerElement //TODO: Check only SelectMovieContainer may use this.
+            {
+                private static readonly Dictionary<MovieSelection, (string buttonText, SolidColorBrush buttonBackgroundColor, SolidColorBrush buttonTextColor)> _buttonStatusesAndColor =
+                                    new Dictionary<MovieSelection, (string buttonText, SolidColorBrush buttonBackgroundColor, SolidColorBrush buttonTextColor)>() {
+
+                {MovieSelection.Hyr,
+                        ( buttonText: MovieSelection.Hyr.ToString(),
+                          buttonBackgroundColor: new SolidColorBrush(Color.FromArgb(0xFF, 0x00, 0xCC, 0x00)),
+                          buttonTextColor: new SolidColorBrush(Color.FromRgb(255,255,255))
+                        )
+                },
+                {MovieSelection.Vald,
+                        ( buttonText: MovieSelection.Vald.ToString(),
+                          buttonBackgroundColor: new SolidColorBrush(Color.FromArgb(0xFF, 0x22, 0x74, 0xA5)),
+                          buttonTextColor: new SolidColorBrush(Color.FromRgb(255,255,255))
+                        )
+                },
+                {MovieSelection.Uthyrd,
+                        ( buttonText: MovieSelection.Uthyrd.ToString(),
+                          buttonBackgroundColor: new SolidColorBrush(Color.FromArgb(0xFF, 0xCC, 0, 0)),
+                          buttonTextColor: new SolidColorBrush(Color.FromRgb(255,255,255))
+                        )
+                }
+                };
+
+                private const int _BUTTONWIDTH = 60;
+                private Button _button;
+                public MovieButtonContainer(MovieDto belongingMovie,
+                                               MouseButtonEventHandler mouseButtonEventHandler)
+                {
+                    _button = new Button();
+                    if (API.IsRentedByCustomer(State.User, belongingMovie.TargetMovie.Id))
+                        _button.IsEnabled = false;
+
+                    SetAppearance(belongingMovie);
+
+                    _button.Width = _BUTTONWIDTH;
+
+                    _button.PreviewMouseUp += mouseButtonEventHandler;
+                }
+
+                public void SetAppearance(MovieDto belongingMovie)
+                {
+                    _button.Content = _buttonStatusesAndColor[belongingMovie.Status].buttonText;
+                    _button.Background = _buttonStatusesAndColor[belongingMovie.Status].buttonBackgroundColor;
+                    _button.Foreground = _buttonStatusesAndColor[belongingMovie.Status].buttonTextColor;
+                }
+
+                public void AddToStack(ref StackPanel stack)
+                {
+                    if (!stack.Children.Contains(_button))
+                        stack.Children.Add(_button);
+                }
+            }
+
+            private class MovieImageContainer : MovieContainerElement
+            {
+                private Image _image;
+                public MovieImageContainer(MovieDto movieDto)
+                {
+                    _image = new Image();
+
+                    _image.Cursor = Cursors.Hand;
+                    _image.HorizontalAlignment = HorizontalAlignment.Center;
+                    _image.VerticalAlignment = VerticalAlignment.Stretch;
+                    _image.Source = new BitmapImage(new Uri(movieDto.TargetMovie.ImageURL));
+                    _image.Margin = new Thickness(4, 4, 4, 4);
+                    _image.Height = 140;
+                }
+
+                public void AddToStack(ref StackPanel stack)
+                {
+                    if (!stack.Children.Contains(_image))
+                        stack.Children.Add(_image);
+                }
             }
         }
 
@@ -125,10 +192,9 @@ namespace Store
         private const int NUMOFCOLS = 4;
         private const int NUMOFROWS = 6;
 
-        
 
-        private List<MovieDto> movies = new List<MovieDto>();
 
+        private List<SelectMovieContainer> moviesForRent = new List<SelectMovieContainer>();
         
         public MainWindow()
         {
@@ -136,41 +202,19 @@ namespace Store
 
             GreetText.Text = $"Välkommen {State.User.FirstName}";
 
-
             foreach(var m in API.GetMovieSlice(0,40))
-            {
-                movies.Add(new MovieDto(m, State.User));
-            }
+                moviesForRent.Add(new SelectMovieContainer(m, ButtonClicked));
 
             for (int y = 1; y < NUMOFROWS; y++)
             {
                 for (int x = 1; x <= NUMOFCOLS; x++)
                 {
                     int i = y * MovieGrid.ColumnDefinitions.Count + x;
-                    if (i < movies.Count)
+                    if (i < moviesForRent.Count)
                     {
-                        
                         try
                         {
-                            var stackPanel = new StackPanel()
-                            {
-                                Orientation = Orientation.Vertical
-                            };
-
-                            //Define image properties
-                            
-
-                            stackPanel.Children.Add(image);
-
-
-                            //Define button properties
-                            var buttonContainer = new MovieButtonContainer(movies[i], ButtonClicked);
-
-                            buttonContainer.AddToStackpanel(ref stackPanel);
-
-                            MovieGrid.Children.Add(stackPanel);
-                            Grid.SetRow(stackPanel, y);
-                            Grid.SetColumn(stackPanel, x);
+                            moviesForRent[i].AddStackToGridLocation(ref MovieGrid, x, y);
 
                         }
                         catch (Exception e) when 
@@ -207,35 +251,31 @@ namespace Store
                 var y = Grid.GetRow(buttonParentStackPanel as UIElement);
 
                 //int i = y * MovieGrid.ColumnDefinitions.Count + x;
-                var selectedMovie = movies[y * MovieGrid.ColumnDefinitions.Count + x];
+                var selectedMovie = moviesForRent[y * MovieGrid.ColumnDefinitions.Count + x];
 
-
-                //Behöver kolla om redan vald.
-                //Behöver kunna plocka bort.
                 //Behöver se till så redan hyrda inte går att klicka.
-                if (selectedMovie.Status == MovieSelection.Vald)
+                if (selectedMovie.movieDto.Status == MovieSelection.Vald)
                 {
-                    ChosenMoviesStack.Children.Remove(selectedMovies[selectedMovie]);
-                    selectedMovies.Remove(selectedMovie);
+                    ChosenMoviesStack.Children.Remove(selectedMovies[selectedMovie.movieDto]);
+                    selectedMovies.Remove(selectedMovie.movieDto);
                     if(ChosenMoviesStack.Children.Count < 1)
                         ChosenMovieScrollViewer.Visibility = Visibility.Hidden;
                 }
-                else if (selectedMovie.Status == MovieSelection.Hyr)
+                else if (selectedMovie.movieDto.Status == MovieSelection.Hyr)
                 {
-                    selectedMovies.Add(selectedMovie, new TextBox()
+                    selectedMovies.Add(selectedMovie.movieDto, new TextBox()
                     {
                         //Name = MOVIEIDPREFIX + selectedMovie.TargetMovie.Id.ToString(), //Will be used for removing movie.
-                        Text = selectedMovie.TargetMovie.Title
+                        Text = selectedMovie.movieDto.TargetMovie.Title
                     });
-                    ChosenMoviesStack.Children.Add(selectedMovies[selectedMovie]);
-                    ChosenMovieScrollViewer.Visibility = Visibility.Visible;
+                    ChosenMoviesStack.Children.Add(selectedMovies[selectedMovie.movieDto]);
+                    ChosenMovieScrollViewer.Visibility = Visibility.Visible; //skips if-statement; would still require 1 check.
                 }
                 else
                     throw new Exception("Hiring logic invalid ; Unexpected error occured.");
 
                 selectedMovie.SwitchHiredStatus();
-                (sender as Button).Content = selectedMovie.Status.ToString();
-
+                (sender as Button).Content = selectedMovie.movieDto.Status.ToString();
             }
         }
     }
