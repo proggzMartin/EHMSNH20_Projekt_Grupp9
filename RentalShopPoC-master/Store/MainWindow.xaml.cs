@@ -23,11 +23,16 @@ namespace Store
         {
             public MovieSelection Status { get; private set; } = MovieSelection.Hyr;
             public Movie TargetMovie { get; set; }
-            public MovieDto(Movie movie, Customer activeCustomer)
+            public MovieDto(Movie movie, Customer activeCustomer) //activeCustomer not neccesary?
             {
+                if (movie == null)
+                    throw new Exception("MovieDto: Movie was null; this class is not allowed to be used like this; dependencies in other classes."); //See MovieButtonContainer
+                if (activeCustomer == null)
+                    throw new Exception("MovieDto: activeCustomer was null; this class is not allowed to be used like this; dependencies in other classes.");
+
                 TargetMovie = movie;
 
-                if(API.IsRentedByCustomer(State.User, TargetMovie.Id))
+                if (API.IsRentedByCustomer(State.User, TargetMovie.Id))
                 {
                     Status = MovieSelection.Uthyrd;
                 }
@@ -35,7 +40,7 @@ namespace Store
 
             public void SwitchHiredStatus()
             {
-                if (!API.IsRentedByCustomer(State.User, TargetMovie.Id) )
+                if (!API.IsRentedByCustomer(State.User, TargetMovie.Id))
                     if (Status == MovieSelection.Hyr)
                         Status = MovieSelection.Vald;
                     else
@@ -43,36 +48,76 @@ namespace Store
             }
         }
 
-        private class ButtonContainer
+
+        private class SelectMovieContainer {
+
+            private UIElement _targetUIElement { get; set; }
+
+            protected UIElement TargetUIElement { get { return _targetUIElement; } } //can/should only be added in this class constructor.
+
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="targetElement">The element to be contained by the selectmovie-box.</param>
+            /// <param name="stack">The stackpanel the element shall belong to.</param>
+            public SelectMovieContainer(UIElement targetElement, ref StackPanel stack)
+            {
+                _targetUIElement = targetElement;
+
+                if (!stack.Children.Contains(_targetUIElement))
+                    stack.Children.Add(_targetUIElement);
+            }
+        }
+
+        private class MovieButtonContainer : SelectMovieContainer
         {
             private static readonly Dictionary<MovieSelection, string> _buttonStatuses = new Dictionary<MovieSelection, string>() {
                 {MovieSelection.Hyr, MovieSelection.Hyr.ToString() },
                 {MovieSelection.Vald, MovieSelection.Vald.ToString() },
                 {MovieSelection.Uthyrd, MovieSelection.Uthyrd.ToString() }
             };
+
             private const int _BUTTONWIDTH = 60;
 
-            private Button _targetButton;
+            //private Button _targetButton; //Can only be reached by the handler.
 
-            public ButtonContainer(MovieDto belongingMovie, MouseButtonEventHandler mouseButtonEventHandler)
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="belongingMovie"></param>
+            /// <param name="mouseButtonEventHandler"></param>
+            /// <param name="stack"></param>
+            public MovieButtonContainer(MovieDto belongingMovie, 
+                                        MouseButtonEventHandler mouseButtonEventHandler,
+                                        ref StackPanel stack) : base(new Button(), ref stack)
             {
-                _targetButton = new Button();
 
                 if (API.IsRentedByCustomer(State.User, belongingMovie.TargetMovie.Id))
-                    _targetButton.IsEnabled = false;
+                    TargetUIElement.IsEnabled = false;
 
-                _targetButton.Content = _buttonStatuses[belongingMovie.Status];
+                (TargetUIElement as Button).Content = _buttonStatuses[belongingMovie.Status];
 
-                _targetButton.Width = _BUTTONWIDTH;
+                (TargetUIElement as Button).Width = _BUTTONWIDTH;
 
-                _targetButton.PreviewMouseUp += mouseButtonEventHandler;
+                (TargetUIElement as Button).PreviewMouseUp += mouseButtonEventHandler;
             }
+        }
 
-            public void AddToStackpanel(ref StackPanel stack) { 
+        private class MovieImageContainer
+        {
+            private Image _targetImage;
 
-                if(!stack.Children.Contains(_targetButton))
-
-                    stack.Children.Add(_targetButton); 
+            public MovieImageContainer()
+            {
+                var image = new Image()
+                {
+                    Cursor = Cursors.Hand,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Stretch,
+                    Source = new BitmapImage(new Uri(movies[i].TargetMovie.ImageURL)),
+                    Margin = new Thickness(4, 4, 4, 4)
+                };
+                image.Height = 140;
             }
         }
 
@@ -113,20 +158,13 @@ namespace Store
                             };
 
                             //Define image properties
-                            var image = new Image() {
-                                Cursor = Cursors.Hand,
-                                HorizontalAlignment = HorizontalAlignment.Center,
-                                VerticalAlignment = VerticalAlignment.Stretch,
-                                Source = new BitmapImage(new Uri(movies[i].TargetMovie.ImageURL)),
-                                Margin = new Thickness(4, 4, 4, 4)
-                            };
-                            image.Height = 140;
+                            
 
                             stackPanel.Children.Add(image);
 
 
                             //Define button properties
-                            var buttonContainer = new ButtonContainer(movies[i], ButtonClicked);
+                            var buttonContainer = new MovieButtonContainer(movies[i], ButtonClicked);
 
                             buttonContainer.AddToStackpanel(ref stackPanel);
 
