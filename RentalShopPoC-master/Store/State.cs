@@ -11,9 +11,7 @@ namespace Store
     static class State
     {
         private static Context context = new Context();
-
-
-        public static Customer User { get; set; } = context.Customers.FirstOrDefault(x => x.UserEmail.Equals("Björn"));
+        public static Customer User { get; set; }
         public static List<Movie> Movies { get; set; }
         public static Movie Pick { get; set; }
     }

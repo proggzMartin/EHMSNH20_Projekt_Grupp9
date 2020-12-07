@@ -67,7 +67,7 @@ namespace Store
         private Customer GetEnteredCustomer()
         {
             var foundUsers = _context.Customers
-                                        .Where(x => x.UserEmail.Equals(UserNameField.Text));
+                                        .Where(x => x.FirstName.Equals(UserNameField.Text));
 
             if (foundUsers == null)
                 throw new ArgumentException(LOGINERRORMESSAGE);

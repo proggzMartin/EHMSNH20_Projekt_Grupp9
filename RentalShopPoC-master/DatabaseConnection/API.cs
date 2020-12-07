@@ -26,7 +26,7 @@ namespace DatabaseConnection
 
         public static Customer GetCustomerByName(string name)
         {
-            return context.Customers.FirstOrDefault(c => c.UserEmail.ToLower() == name.ToLower());
+            return context.Customers.FirstOrDefault(c => c.Name.ToLower() == name.ToLower());
         }
 
         public static bool RegisterSale(Customer customer, Movie movie)
@@ -48,14 +48,14 @@ namespace DatabaseConnection
         {
             var m = context.Movies.FirstOrDefault(x => x.Id.Equals(movieId)) ?? throw new Exception("Movie doesn't exist.");
 
-            var x = m.Sales.Any(x => x.Customer.UserEmail.Equals(activeCustomer.UserEmail));
+            var x = m.Sales.Any(x => x.Customer.Id.Equals(activeCustomer.Id));
             return x;
         }
 
         public static void RentMovie(Customer activeCustomer, int movieId)
         {
             var customer = context.Customers
-                            .FirstOrDefault(x => x.UserEmail.Equals(activeCustomer.UserEmail)) //select customer on primary key.
+                            .FirstOrDefault(x => x.Id.Equals(activeCustomer.Id)) //select customer on primary key.
                                 ?? throw new Exception("Customer doesn't exist.");
 
             customer.Sales?.Add(new Rental()

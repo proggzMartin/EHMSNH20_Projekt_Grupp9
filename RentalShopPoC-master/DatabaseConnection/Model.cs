@@ -9,19 +9,15 @@ namespace DatabaseConnection
     public class Customer
     {
         [Key]
-//<<<<<<< HEAD
-//        [Required]
-//        public string UserEmail { get; set; }
-//        [Required]
-//        public string Password { get; set; }
+        [Required]
+        public int Id { get; set; }
+        [Required]
+        public string Password { get; set; }
 
-//        public string FirstName { get; set; }
-//=======
-        public int Id { get; set; }      
+        public string FirstName { get; set; }
+
         [Required]
         public string Name { get; set; }
-        [Required] 
-        public string Password { get; set; }
         public string LastName { get; set; }
         public virtual List<Rental> Sales { get; set; }
     }
