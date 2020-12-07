@@ -1,13 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace DatabaseConnection
 {
     public class Customer
     {
-        public int Id { get; set; }
+        [Key]
+        public int Id { get; set; }      
+        [Required]
         public string Name { get; set; }
+        [Required] 
+        public string Password { get; set; }
+        public string LastName { get; set; }
         public virtual List<Rental> Sales { get; set; }
     }
     public class Movie
@@ -24,4 +31,8 @@ namespace DatabaseConnection
         public virtual Customer Customer { get; set; }
         public virtual Movie Movie { get; set; }
     }
+
+
+
+
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 
+
 namespace DatabaseConnection
 {
     public class Context : DbContext
@@ -15,7 +16,7 @@ namespace DatabaseConnection
                 //.LogTo(s => System.Diagnostics.Debug.WriteLine(s))
                 .UseLazyLoadingProxies()
                 .UseSqlServer(
-                @"server=.\SQLExpress;" +
+                @"server=localhost\SQLEXPRESS;" +
                 @"database=SaleDatabase;" +
                 @"trusted_connection=true;" +
                 @"MultipleActiveResultSets=True"
@@ -24,6 +25,7 @@ namespace DatabaseConnection
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            
         }
     }
 }
