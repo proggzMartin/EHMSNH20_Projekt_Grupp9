@@ -58,7 +58,7 @@ namespace Store
                 {
                     Customer customer = new Customer()
                     {
-                        Name = _name,
+                        FirstName = _name,
                         LastName = _last_name,
                         Password = _password
                     };

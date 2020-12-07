@@ -78,7 +78,7 @@
             Height="300"/>
 
         <!-- 800x450 -->
-        <Label Content="Användarnamn" 
+        <Label Content="Ert namn" 
                HorizontalAlignment="left" 
                VerticalAlignment="Top"
                Margin="316,150,0,0" 

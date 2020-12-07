@@ -18,16 +18,16 @@ namespace DatabaseConnection
 
                 ctx.AddRange(new List<Customer> {
 
-                    new Customer { Name = "Björn",    Password =  "Björn" , LastName   = "StrömBerg" },
-                    new Customer { Name = "Robin",    Password =  "Robin" , LastName   = "Havberg"   },
-                    new Customer { Name = "Amanda",   Password =  "Amanda", LastName   = "Åberg"     },
+                    new Customer { FirstName = "Björn",    Password =  "Björn" , LastName   = "StrömBerg" },
+                    new Customer { FirstName = "Robin",    Password =  "Robin" , LastName   = "Havberg"   },
+                    new Customer { FirstName = "Amanda",   Password =  "Amanda", LastName   = "Åberg"     },
 
                     // Added in migration - MoreCustomers
-                    new Customer { Name = "Erik",     Password =  "Erik"      ,  LastName   =  "StrömBerg" },
-                    new Customer { Name = "Johannes", Password =  "Johannes"  ,  LastName   =  "Åberg"     },
-                    new Customer { Name = "Martin",   Password =  "Martin"    ,  LastName   =  "Havberg"   },
-                    new Customer { Name = "Ida",      Password =  "Ida"       ,  LastName   =  "Åberg"     },
-                    new Customer { Name = "Eva",      Password =  "Eva"       ,  LastName   =  "StrömBerg" }
+                    new Customer { FirstName = "Erik",     Password =  "Erik"      ,  LastName   =  "StrömBerg" },
+                    new Customer { FirstName = "Johannes", Password =  "Johannes"  ,  LastName   =  "Åberg"     },
+                    new Customer { FirstName = "Martin",   Password =  "Martin"    ,  LastName   =  "Havberg"   },
+                    new Customer { FirstName = "Ida",      Password =  "Ida"       ,  LastName   =  "Åberg"     },
+                    new Customer { FirstName = "Eva",      Password =  "Eva"       ,  LastName   =  "StrömBerg" }
 
                 });
 

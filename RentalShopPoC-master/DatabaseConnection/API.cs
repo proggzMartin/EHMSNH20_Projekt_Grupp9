@@ -24,9 +24,9 @@ namespace DatabaseConnection
             return context.Movies.Count();
         }
 
-        public static Customer GetCustomerByName(string name)
+        public static Customer GetCustomerByFirstName(string firstName)
         {
-            return context.Customers.FirstOrDefault(c => c.Name.ToLower() == name.ToLower());
+            return context.Customers.FirstOrDefault(c => c.FirstName.ToLower() == firstName.ToLower());
         }
 
         public static bool RegisterSale(Customer customer, Movie movie)
