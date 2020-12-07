@@ -26,7 +26,8 @@
             <RowDefinition Height="180" />
             <RowDefinition Height="45"/>
         </Grid.RowDefinitions>
-        <Image Source="/images/head.png"
+        <Image x:Name="headerImage"
+                Source="/images/head.png"
                 Grid.Column="0"
                 Grid.Row="0"
                 Grid.ColumnSpan="5"/>
