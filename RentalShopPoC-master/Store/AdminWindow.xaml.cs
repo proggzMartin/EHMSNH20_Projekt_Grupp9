@@ -92,10 +92,11 @@ namespace Store
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             
-            //int Id = (CustomerGrid.SelectedItem as Customer).Id;
-            //var deleteCustomer = db.Customers.Where(c => c.Id == Id).Single();
-            //db.Customers.Remove(deleteCustomer);
-            //CustomerGrid.ItemsSource = db.Customers.ToList();
+            int Id = (CustomerGrid.SelectedItem as Customer).Id;
+            var deleteCustomer = db.Customers.Where(c => c.Id == Id).Single();
+            db.Customers.Remove(deleteCustomer);
+            db.SaveChanges();
+            CustomerGrid.ItemsSource = db.Customers.ToList();
 
         }
     }
