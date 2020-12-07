@@ -26,6 +26,7 @@ namespace Store
             public Movie TargetMovie { get; set; }
             public MovieStatus Status { get; private set; } = MovieStatus.Hyr;
 
+            private StackPanel _stackPanel;
             private MovieImageContainer _imageContainer;
             private MovieButtonContainer _buttonContainer;
 
@@ -46,13 +47,30 @@ namespace Store
 
                 _imageContainer = new MovieImageContainer(TargetMovie.ImageURL);
                 _buttonContainer = new MovieButtonContainer(Status, TargetMovie, mouseButtonEventHandler);
+
+                _stackPanel = new StackPanel();
+                _stackPanel.Children.Add(_imageContainer.Image);
+                _stackPanel.Children.Add(_buttonContainer.Button);
+
             }
 
-            public Image GetImageElement() { return _imageContainer.Image; }
-            public Button GetButtonElement() { return _buttonContainer.Button; }
             public void SetNewMovie(Movie movie)
             {
+                TargetMovie = movie;
+                if (API.IsRentedByCustomer(State.User, movie.Id))
+                    Status = MovieStatus.Uthyrd;
+                else if (selectedMovies.ContainsKey(movie))
+                    Status = MovieStatus.Uthyrd;
+                else
+                    Status = MovieStatus.Hyr;
+
                 _imageContainer.SetActiveMovie(movie.ImageURL);
+                _buttonContainer.SetAppearance(Status);
+            }
+
+            public StackPanel GetStackPanel()
+            {
+                return _stackPanel;
             }
 
             private bool _TargetMovieIsValid(Movie movie)
@@ -119,6 +137,9 @@ namespace Store
 
                 public void SetAppearance(MovieStatus movieStatus)
                 {
+                    if (movieStatus.Equals(MovieStatus.Uthyrd))
+                        Button.IsEnabled = false;
+
                     Button.Content =    _buttonStatusesAndColor[movieStatus].buttonText;
                     Button.Background = _buttonStatusesAndColor[movieStatus].buttonBackgroundColor;
                     Button.Foreground = _buttonStatusesAndColor[movieStatus].buttonTextColor;
@@ -150,12 +171,13 @@ namespace Store
 
         private const int NUMOFCOLS = 3;
         private const int NUMOFROWS = 3;
-        private const int SLICESIZE = 18;
+        private const int SLICESIZE = NUMOFROWS * NUMOFCOLS;
         private int pageIndex = 0;
 
 
         private List<SelectMovieContainer> moviesForRent = new List<SelectMovieContainer>();
-        
+        public static Dictionary<Movie, UIElement> selectedMovies = new Dictionary<Movie, UIElement>();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -174,25 +196,19 @@ namespace Store
             foreach (var m in API.GetMovieSlice(pageIndex, SLICESIZE))
                 moviesForRent.Add(new SelectMovieContainer(m, ButtonClicked));
 
-            for (int y = 1; y <= NUMOFROWS; y++)
+            for (int y = 0; y < NUMOFROWS; y++)
             {
-                for (int x = 1; x <= NUMOFCOLS; x++)
+                for (int x = 0; x < NUMOFCOLS; x++)
                 {
-                    int i = y * MovieGrid.ColumnDefinitions.Count + x;
-                    if (i < moviesForRent.Count)
-                    {
+                    int i = y * (MovieGrid.ColumnDefinitions.Count-1) + x; //First columndef doesn't count.
+                    //if (i < moviesForRent.Count)
+                    //{
                         try
                         {
-                            StackPanel _stackPanel = new StackPanel();
+                            MovieGrid.Children.Add(moviesForRent[i].GetStackPanel());
 
-                            _stackPanel.Children.Add(moviesForRent[i].GetImageElement());
-                            _stackPanel.Children.Add(moviesForRent[i].GetButtonElement());
-
-
-                            MovieGrid.Children.Add(_stackPanel);
-
-                            Grid.SetRow(_stackPanel, y);
-                            Grid.SetColumn(_stackPanel, x);
+                            Grid.SetRow(moviesForRent[i].GetStackPanel(), y+1);
+                            Grid.SetColumn(moviesForRent[i].GetStackPanel(), x+1);
                         }
                         catch (Exception e) when
                             (e is ArgumentNullException ||
@@ -201,7 +217,7 @@ namespace Store
                         {
                             continue;
                         }
-                    }
+                    //}
                 }
             }
         }
@@ -257,15 +273,14 @@ namespace Store
 
         }
 
-        private Dictionary<Movie, UIElement> selectedMovies = new Dictionary<Movie, UIElement>();
 
         private void ButtonClicked(object sender, MouseButtonEventArgs e) 
         {
             if(sender is Button)
             {
                 var buttonParentStackPanel = (sender as Button).Parent;
-                var x = Grid.GetColumn(buttonParentStackPanel as UIElement);
-                var y = Grid.GetRow(buttonParentStackPanel as UIElement);
+                var x = Grid.GetColumn(buttonParentStackPanel as UIElement)-1;
+                var y = Grid.GetRow(buttonParentStackPanel as UIElement)-1;
 
                 //int i = y * MovieGrid.ColumnDefinitions.Count + x;
                 var selectedMovie = moviesForRent[y * MovieGrid.ColumnDefinitions.Count + x];
