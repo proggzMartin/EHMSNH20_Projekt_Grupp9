@@ -264,13 +264,14 @@ namespace Store
         private void _rentMovies(object sender, MouseButtonEventArgs e)
         {
             ChosenMoviesStack.Children.Clear();
+            ChosenMovieScrollViewer.Visibility = Visibility.Hidden;
 
             var movieIds = selectedMovies.Select(sm => sm.Key.Id).ToList();
 
             foreach(var movieId in movieIds)
                 API.RentMovie(State.User, movieId);
-            //_setMoviesForRent();
 
+            //Uppdatera buttons.
         }
 
 
@@ -283,12 +284,12 @@ namespace Store
                 var y = Grid.GetRow(buttonParentStackPanel as UIElement)-1;
 
                 //int i = y * MovieGrid.ColumnDefinitions.Count + x;
-                var selectedMovie = moviesForRent[y * MovieGrid.ColumnDefinitions.Count + x];
+                var selectedMovieContainer = moviesForRent[y * (MovieGrid.ColumnDefinitions.Count - 1) + x];
 
-                if (selectedMovie.Status == MovieStatus.Vald)
+                if (selectedMovieContainer.Status == MovieStatus.Vald)
                 {
-                    ChosenMoviesStack.Children.Remove(selectedMovies[selectedMovie.TargetMovie]);
-                    selectedMovies.Remove(selectedMovie.TargetMovie);
+                    ChosenMoviesStack.Children.Remove(selectedMovies[selectedMovieContainer.TargetMovie]);
+                    selectedMovies.Remove(selectedMovieContainer.TargetMovie);
                     if(ChosenMoviesStack.Children.Count < 1)
                     {
                         ChosenMovieScrollViewer.Visibility = Visibility.Hidden;
@@ -296,20 +297,20 @@ namespace Store
 
                     }
                 }
-                else if (selectedMovie.Status == MovieStatus.Hyr)
+                else if (selectedMovieContainer.Status == MovieStatus.Hyr)
                 {
-                    selectedMovies.Add(selectedMovie.TargetMovie, new TextBox()
+                    selectedMovies.Add(selectedMovieContainer.TargetMovie, new TextBox()
                     {
-                        Text = selectedMovie.TargetMovie.Title
+                        Text = selectedMovieContainer.TargetMovie.Title
                     });
-                    ChosenMoviesStack.Children.Add(selectedMovies[selectedMovie.TargetMovie]);
+                    ChosenMoviesStack.Children.Add(selectedMovies[selectedMovieContainer.TargetMovie]);
                     ChosenMovieScrollViewer.Visibility = Visibility.Visible; //skips if-statement; would still require 1 check.
                     RentMoviesButton.Visibility = Visibility.Visible;
                 }
                 else
                     throw new Exception("Hiring logic invalid ; Unexpected error occured.");
 
-                selectedMovie.SwitchMovieStatus();
+                selectedMovieContainer.SwitchMovieStatus();
 
                 //(sender as Button).Content = selectedMovie.movieDto.Status.ToString();
             } else 
