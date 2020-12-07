@@ -29,7 +29,7 @@
         </Grid.RowDefinitions>
 
         
-        <Label FontSize="20" x:Name="CustomerNameText" Content="Name" Grid.Column="1" Grid.Row="1"></Label>
+        <Label FontSize="20" x:Name="CustomerNameText" Content="FirstName" Grid.Column="1" Grid.Row="1"></Label>
         <TextBox x:Name="CustomerName" Grid.Column="1" Grid.Row="2"></TextBox>
         
         <Label FontSize="20" x:Name="LastNameText" Content="LastName" Grid.Column="1" Grid.Row="3"></Label>
@@ -44,7 +44,7 @@
         <DataGrid AutoGenerateColumns="False" x:Name="CustomerGrid"  Grid.Column="1" Grid.Row="10" >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
-                <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding FirstName}"/>
                 <DataGridTextColumn Header="Lastname" Binding="{Binding LastName}"/>
                 <DataGridTextColumn Header="Password" Binding="{Binding Password}"/>
                 
