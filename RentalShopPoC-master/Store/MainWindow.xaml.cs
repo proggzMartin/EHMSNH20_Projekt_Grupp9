@@ -189,7 +189,7 @@ namespace Store
                             _stackPanel.Children.Add(moviesForRent[i].GetButtonElement());
 
 
-                            MovieGrid.Children.Add(new StackPanel());
+                            MovieGrid.Children.Add(_stackPanel);
 
                             Grid.SetRow(_stackPanel, y);
                             Grid.SetColumn(_stackPanel, x);
