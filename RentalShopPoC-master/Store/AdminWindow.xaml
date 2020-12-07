@@ -39,19 +39,29 @@
         <TextBox x:Name="Password" Grid.Column="1" Grid.Row="6"></TextBox>
         
         <Button  Grid.Column="1" Grid.Row="8" Foreground="Black" Click="Button_Click" Content="Add"></Button>
-        <CheckBox Grid.Column="1" Grid.Row="9" Foreground="Black" Checked="Button_Click_1" Content="Delete" > </CheckBox>
+       
+ 
+        <DataGrid AutoGenerateColumns="False" x:Name="CustomerGrid"  Grid.Column="1" Grid.Row="10" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Lastname" Binding="{Binding LastName}"/>
+                <DataGridTextColumn Header="Password" Binding="{Binding Password}"/>
+                
+                  <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            
+                            <Button Content="Delete" Click="Button_Click_1"></Button>
 
-        <ListView x:Name="CustomerList"  Grid.Column="1" Grid.Row="10">
-            <ListView.View>
-                <GridView>
-                <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}" ></GridViewColumn>
-                <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" ></GridViewColumn>
-                <GridViewColumn Header="LastName" DisplayMemberBinding="{Binding LastName}" ></GridViewColumn>
-                <GridViewColumn Header="Password" DisplayMemberBinding="{Binding Password}" ></GridViewColumn>
-                <GridViewColumn Header="Sales" DisplayMemberBinding="{Binding Sales}"></GridViewColumn>
-            </GridView>
-            </ListView.View>
-        </ListView>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                
+                
+                
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
        
  

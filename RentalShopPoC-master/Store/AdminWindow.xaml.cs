@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -25,12 +26,14 @@ namespace Store
     
     public partial class AdminWindow : Window
     {
+
+        public static DataGrid datagrid;
+        Context db = new Context();
        
 
         public AdminWindow()
         {
             InitializeComponent();
-
             PopulateCustomerData();
 
         }
@@ -43,13 +46,13 @@ namespace Store
             var _last_name = LastName.Text;
             var _password = Password.Text;
 
-            if (_name.Length < 2 || _last_name.Length <2 || _password.Length < 2)
-            {
 
-                MessageBox.Show("Too Short Name,LastName or Password try again!", "The Database says no!", MessageBoxButton.OK, MessageBoxImage.Information);
-                
+
+            if (_name.Length <= 2 || _last_name.Length <=2 || _password.Length <= 2)
+            {
+                MessageBox.Show("Too Short Name,LastName or Password try again!", "The Database says no!", MessageBoxButton.OK, MessageBoxImage.Information);    
             }
-            else if (_name.Length > 2 || _last_name.Length > 2 || _password.Length > 2)
+            else 
             {
                 using (Context db = new Context())
                 {
@@ -59,12 +62,12 @@ namespace Store
                         LastName = _last_name,
                         Password = _password
                     };
-
-
                     {
                         db.Customers.Add(customer);
                         db.SaveChanges();
-                        PopulateCustomerData();
+                        CustomerGrid.ItemsSource = db.Customers.ToList();
+                       
+
                     }
 
                 }
@@ -76,26 +79,23 @@ namespace Store
         private void PopulateCustomerData()
         {
 
-            using (Context db = new Context())
-            {
-                var CustomerData = db.Customers.ToList();
-                foreach (var item in CustomerData)
-                {
-                    CustomerList.Items.Add(item);
-                }
+           
+                CustomerGrid.ItemsSource = db.Customers.ToList();
+                datagrid = CustomerGrid;
 
 
-            }
+
+
 
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-
-        }
-
-        private void CustomerList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
+            
+            int Id = (CustomerGrid.SelectedItem as Customer).Id;
+            var deleteCustomer = db.Customers.Where(c => c.Id == Id).Single();
+            db.Customers.Remove(deleteCustomer);
+            CustomerGrid.ItemsSource = db.Customers.ToList();
 
         }
     }
