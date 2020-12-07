@@ -21,20 +21,15 @@ namespace DatabaseConnection.Migrations
 
             modelBuilder.Entity("DatabaseConnection.Customer", b =>
                 {
-                    b.Property<string>("UserEmail")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
 
-                    b.Property<string>("FirstName")
+                    b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("UserEmail");
+                    b.HasKey("Id");
 
                     b.ToTable("Customers");
                 });
@@ -64,8 +59,8 @@ namespace DatabaseConnection.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<string>("CustomerUserEmail")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int?>("CustomerId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -75,7 +70,7 @@ namespace DatabaseConnection.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerUserEmail");
+                    b.HasIndex("CustomerId");
 
                     b.HasIndex("MovieId");
 
@@ -86,7 +81,7 @@ namespace DatabaseConnection.Migrations
                 {
                     b.HasOne("DatabaseConnection.Customer", "Customer")
                         .WithMany("Sales")
-                        .HasForeignKey("CustomerUserEmail");
+                        .HasForeignKey("CustomerId");
 
                     b.HasOne("DatabaseConnection.Movie", "Movie")
                         .WithMany("Sales")
