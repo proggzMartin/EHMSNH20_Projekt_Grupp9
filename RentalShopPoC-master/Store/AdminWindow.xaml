@@ -1,0 +1,68 @@
+﻿<Window x:Class="Store.AdminWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Store"
+        mc:Ignorable="d"
+        Title="AdminWindow" Height="350" Width="525">
+    <Grid Background="White">
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="20"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+
+        
+        <Label FontSize="20" x:Name="CustomerNameText" Content="Name" Grid.Column="1" Grid.Row="1"></Label>
+        <TextBox x:Name="CustomerName" Grid.Column="1" Grid.Row="2"></TextBox>
+        
+        <Label FontSize="20" x:Name="LastNameText" Content="LastName" Grid.Column="1" Grid.Row="3"></Label>
+        <TextBox x:Name="LastName" Grid.Column="1" Grid.Row="4"></TextBox>
+        
+        <Label FontSize="20" x:Name="PasswordText" Content="Password" Grid.Column="1" Grid.Row="5"></Label>
+        <TextBox x:Name="Password" Grid.Column="1" Grid.Row="6"></TextBox>
+        
+        <Button  Grid.Column="1" Grid.Row="8" Foreground="Black" Click="Button_Click" Content="Add"></Button>
+       
+ 
+        <DataGrid AutoGenerateColumns="False" x:Name="CustomerGrid"  Grid.Column="1" Grid.Row="10" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Lastname" Binding="{Binding LastName}"/>
+                <DataGridTextColumn Header="Password" Binding="{Binding Password}"/>
+                
+                  <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            
+                            <Button Content="Delete" Click="Button_Click_1"></Button>
+
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                
+                
+                
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+       
+ 
+</Window>

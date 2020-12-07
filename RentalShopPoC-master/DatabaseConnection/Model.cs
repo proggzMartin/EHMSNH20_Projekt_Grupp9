@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace DatabaseConnection
@@ -8,12 +9,19 @@ namespace DatabaseConnection
     public class Customer
     {
         [Key]
-        [Required]
-        public string UserEmail { get; set; }
-        [Required]
-        public string Password { get; set; }
+//<<<<<<< HEAD
+//        [Required]
+//        public string UserEmail { get; set; }
+//        [Required]
+//        public string Password { get; set; }
 
-        public string FirstName { get; set; }
+//        public string FirstName { get; set; }
+//=======
+        public int Id { get; set; }      
+        [Required]
+        public string Name { get; set; }
+        [Required] 
+        public string Password { get; set; }
         public string LastName { get; set; }
         public virtual List<Rental> Sales { get; set; }
     }
@@ -32,4 +40,8 @@ namespace DatabaseConnection
         public int MovieId { get; set; }
         public virtual Movie Movie { get; set; }
     }
+
+
+
+
 }

@@ -51,6 +51,7 @@ namespace Store
     
         }
 
+
         private void _DisplayError(string message = LOGINERRORMESSAGE)
         {
             ErrorLabel.Content = LOGINERRORMESSAGE;
