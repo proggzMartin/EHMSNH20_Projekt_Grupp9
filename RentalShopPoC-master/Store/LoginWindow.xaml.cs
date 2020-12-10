@@ -81,5 +81,11 @@ namespace Store
             return foundUsers.First();
         }
 
+        private void Admin_Click(object sender, RoutedEventArgs e)
+        {
+            AdminWindow admin = new AdminWindow();
+            admin.Show();
+            this.Close();
+        }
     }
 }

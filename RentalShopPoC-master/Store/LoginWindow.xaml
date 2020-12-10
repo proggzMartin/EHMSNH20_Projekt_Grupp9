@@ -15,14 +15,20 @@
         <!--<Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
             <ColumnDefinition Width="200"/>
-            --><!--  --><!--
+            -->
+        <!--  -->
+        <!--
             <ColumnDefinition Width="auto"/>
-            --><!-- Auto-passande --><!--
+            -->
+        <!-- Auto-passande -->
+        <!--
             <ColumnDefinition Width="100"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="20"/>
 
-            --><!-- Tar upp resten. --><!--
+            -->
+        <!-- Tar upp resten. -->
+        <!--
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
@@ -32,15 +38,17 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         
-        --><!-- x:Name=".." -->
-        <!--https://stackoverflow.com/questions/13569782/how-to-access-control-in-code-behind-that-was-created-in-xaml--><!--
+        -->
+        <!-- x:Name=".." -->
+        <!--https://stackoverflow.com/questions/13569782/how-to-access-control-in-code-behind-that-was-created-in-xaml-->
+        <!--
         <ListBox x:Name="peopleListBox" Grid.Column="2" Grid.Row="0"></ListBox>
         <TextBlock Name="background"></TextBlock>
         <TextBlock Grid.Row="1" Grid.Column="1">HAJJJJ</TextBlock>
         <TextBlock Grid.Row="0" Grid.Column="1">HALLAU</TextBlock>
         <TextBlock Grid.Row="2" Grid.Column="1" Text="HALLAO döu" Cursor="Arrow" Background="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" FontSize="48" FontWeight="Bold" Foreground="White"/>
         -->
-        
+
         <!--<Image Source="/Images/adderz.png" 
                Grid.Column="2" 
                Grid.Row="1"
@@ -83,7 +91,7 @@
                VerticalAlignment="Top"
                Margin="316,150,0,0" 
                Foreground="White"/>
-        
+
         <TextBox Name="UserNameField" 
                  HorizontalAlignment="Left" 
                  VerticalAlignment="Top" 
@@ -105,11 +113,17 @@
                  Width="150"
                  Foreground="Black"/>
 
+        <Button Click="Admin_Click"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"              
+                Margin="403,256,0,0" Height="20" Width="60"
+                Content="Admin" RenderTransformOrigin="0.463,0.494"/>
+
         <Button Click="LoginButton" 
-                HorizontalAlignment="left" 
+                HorizontalAlignment="Left" 
                 VerticalAlignment="Top"
                 Margin="320,256,0,0" 
-                Content="Logga in"/>
+                Content="Logga in" Width="60" Height="20"/>
 
         <Label Name="ErrorLabel"
                Content="" 
@@ -117,6 +131,9 @@
                VerticalAlignment="Top"
                Margin="320,300,0,0"
                Foreground="White"/>
-        
+
+
+
+
     </Grid>
 </Window>

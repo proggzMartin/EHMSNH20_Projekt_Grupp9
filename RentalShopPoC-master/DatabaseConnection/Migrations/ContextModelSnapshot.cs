@@ -26,15 +26,7 @@ namespace DatabaseConnection.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
+                    b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -60,7 +52,7 @@ namespace DatabaseConnection.Migrations
                     b.ToTable("Movies");
                 });
 
-            modelBuilder.Entity("DatabaseConnection.Rental", b =>
+            modelBuilder.Entity("DatabaseConnection.Sale", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -73,7 +65,7 @@ namespace DatabaseConnection.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("MovieId")
+                    b.Property<int?>("MovieId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -85,7 +77,7 @@ namespace DatabaseConnection.Migrations
                     b.ToTable("Sales");
                 });
 
-            modelBuilder.Entity("DatabaseConnection.Rental", b =>
+            modelBuilder.Entity("DatabaseConnection.Sale", b =>
                 {
                     b.HasOne("DatabaseConnection.Customer", "Customer")
                         .WithMany("Sales")
@@ -93,9 +85,7 @@ namespace DatabaseConnection.Migrations
 
                     b.HasOne("DatabaseConnection.Movie", "Movie")
                         .WithMany("Sales")
-                        .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MovieId");
 
                     b.Navigation("Customer");
 
