@@ -39,7 +39,7 @@
         <TextBox x:Name="Password" Grid.Column="1" Grid.Row="5" Margin="102,12,245,16"/>
 
         <Button  Grid.Column="1" Grid.Row="7" Foreground="Black" Click="Button_Add" Content="Add" Margin="102,0,245,21"/>
-        
+        <Button  Grid.Column="1" Grid.Row="7" Foreground="Black" Click="Button_Loginwindow" Content="LoginWindow" Margin="4,0,392,21"/>
 
         <DataGrid AutoGenerateColumns="False" x:Name="CustomerGrid"  Grid.Column="1" Grid.Row="9" Margin="0,20,0,0" Grid.RowSpan="2" >
             <DataGrid.Columns>
@@ -53,7 +53,7 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
 
-                            <Button Content="Delete" Click="Button_Click_1"></Button>
+                            <Button Content="Delete" Click="Button_Delete"></Button>
 
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>

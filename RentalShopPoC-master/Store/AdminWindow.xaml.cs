@@ -39,7 +39,7 @@ namespace Store
         }
 
         
-      private void Button_Click(object sender, RoutedEventArgs e)
+      private void Button_Add(object sender, RoutedEventArgs e)
         {
             
             var _name = CustomerName.Text;
@@ -89,7 +89,7 @@ namespace Store
 
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void Button_Delete(object sender, RoutedEventArgs e)
         {
             
             int Id = (CustomerGrid.SelectedItem as Customer).Id;
@@ -100,9 +100,9 @@ namespace Store
 
         }
 
-        private void Button_Click_2(object sender, RoutedEventArgs e)
+        private void Button_Loginwindow(object sender, RoutedEventArgs e)
         {
-
+            
         }
     }
 }
