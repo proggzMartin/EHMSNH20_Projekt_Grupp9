@@ -89,12 +89,27 @@ namespace Store
 
         private void Button_Delete(object sender, RoutedEventArgs e)
         {
+            // har du hyrt mera filmer går det inte att ta bort dig, men har du en film är det kört!
+            try
+            {
+
+                int Id = (CustomerGrid.SelectedItem as Customer).Id;
+                var deleteCustomer = db.Customers.Where(c => c.Id == Id).Single();
+                db.Customers.Remove(deleteCustomer);
+                db.SaveChanges();
+                CustomerGrid.ItemsSource = db.Customers.ToList();
+            }
+            catch
+            {
+               
+                    int Id2 = (CustomerGrid.SelectedItem as Customer).Id;
+                    var deleteCustomer2 = db.Sales.Where(s => s.Customer.Id == Id2).Single();           
+                    db.Sales.Remove(deleteCustomer2);
+                    db.SaveChanges();
+                    CustomerGrid.ItemsSource = db.Customers.ToList();
+
+            }
             
-            int Id = (CustomerGrid.SelectedItem as Customer).Id;
-            var deleteCustomer = db.Customers.Where(c => c.Id == Id).Single();
-            db.Customers.Remove(deleteCustomer);
-            db.SaveChanges();
-            CustomerGrid.ItemsSource = db.Customers.ToList();
 
         }
 
