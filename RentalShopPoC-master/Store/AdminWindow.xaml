@@ -47,6 +47,7 @@
                 <DataGridTextColumn Header="Name" Binding="{Binding FirstName}"/>
                 <DataGridTextColumn Header="Lastname" Binding="{Binding LastName}"/>
                 <DataGridTextColumn Header="Password" Binding="{Binding Password}"/>
+                <DataGridTextColumn Header="Sales" Binding='{Binding Sales}'/>
 
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
