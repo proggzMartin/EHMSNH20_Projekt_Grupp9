@@ -99,5 +99,10 @@ namespace Store
             CustomerGrid.ItemsSource = db.Customers.ToList();
 
         }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
