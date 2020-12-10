@@ -20,7 +20,7 @@
             <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
-            <RowDefinition Height="111"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="20"/>
 
         </Grid.RowDefinitions>
@@ -41,13 +41,13 @@
 
 
 
-        <DataGrid  AutoGenerateColumns="False" x:Name="CustomerGrid" Grid.Row="6" Grid.ColumnSpan="2" Width="468" >
+        <DataGrid  AutoGenerateColumns="False" x:Name="CustomerGrid" Grid.Row="6" Margin="0,0,1,0" Grid.Column="1" >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
                 <DataGridTextColumn Header="Name" Binding="{Binding FirstName}"/>
                 <DataGridTextColumn Header="Lastname" Binding="{Binding LastName}"/>
                 <DataGridTextColumn Header="Password" Binding="{Binding Password}"/>
-                <DataGridTextColumn Header="Sales" Binding='{Binding Sales}'/>
+                
 
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>

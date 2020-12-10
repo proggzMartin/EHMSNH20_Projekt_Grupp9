@@ -85,8 +85,6 @@ namespace Store
 
 
 
-
-
         }
 
         private void Button_Delete(object sender, RoutedEventArgs e)
