@@ -241,18 +241,11 @@ namespace Store
 
         private void _logout(object sender, MouseButtonEventArgs e)
         {
-            var x = API.GetMovieSlice(30, 1).First();
+            State.User = null;
 
-            moviesForRent[0].SetNewMovie(x);
-
-
-
-
-            //State.User = null;
-
-            //var next_window = new LoginWindow();
-            //next_window.Show();
-            //Close();
+            var next_window = new LoginWindow();
+            next_window.Show();
+            Close();
         }
 
         private void _setMoviesForRent(int page)
