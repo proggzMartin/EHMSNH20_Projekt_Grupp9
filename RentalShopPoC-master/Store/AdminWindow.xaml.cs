@@ -102,6 +102,9 @@ namespace Store
 
         private void Button_Loginwindow(object sender, RoutedEventArgs e)
         {
+            LoginWindow loginw = new LoginWindow();
+            loginw.Show();
+            this.Close();
             
         }
     }

@@ -1,9 +1,8 @@
-﻿<Window x:Class="AdminWindow"
+﻿<Window x:Class="Store.AdminWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Store"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"        
         mc:Ignorable="d"
         Title="AdminWindow" Height="350" Width="525">
     <Grid Background="#CC0000">
@@ -31,18 +30,18 @@
         <Label Content="Add" HorizontalAlignment="Left" RenderTransformOrigin="2.271,2.91" Margin="1,5,0,3" Grid.Column="1" Width="67"          Grid.Row="4"/>
         <Label Content="LoginW" HorizontalAlignment="Left" RenderTransformOrigin="2.271,2.91" Margin="1,5,0,3" Grid.Column="1" Width="96" Grid.Row="5"/>
 
-        <TextBox HorizontalAlignment="Center" x:Name="CustomerName" Grid.Column="1" Grid.Row="1" Margin="0,11,0,11" Width="341"/>
-        <TextBox HorizontalAlignment="Center" x:Name="LastName" Grid.Column="1" Grid.Row="2"     Margin="0,11,0,11" Width="341"/>
-        <TextBox HorizontalAlignment="Center" x:Name="Password" Grid.Column="1" Grid.Row="3"     Margin="0,11,0,11" Width="341"/>
-        <Button  HorizontalAlignment="Center" Grid.Column="1" Grid.Row="4" Foreground="Black" Click="Button_Add" Content="Add" Margin="0,11,0,11" Width="341"/>
-        <Button HorizontalAlignment="Center"  Grid.Column="1" Grid.Row="5" Foreground="Black" Click="Button_Loginwindow" Content="LoginWindow" Margin="0,11,0,11" Width="341"/>
+        <TextBox  x:Name="CustomerName" Grid.Column="1" Grid.Row="1" Margin="0,11,0,11" Width="341"/>
+        <TextBox  x:Name="LastName" Grid.Column="1" Grid.Row="2"     Margin="0,11,0,11" Width="341"/>
+        <TextBox  x:Name="Password" Grid.Column="1" Grid.Row="3"     Margin="0,11,0,11" Width="341"/>
+        <Button   Grid.Column="1" Grid.Row="4" Foreground="Black" Click="Button_Add" Content="Add" Margin="0,11,0,11" Width="341"/>
+        <Button   Grid.Column="1" Grid.Row="5" Foreground="Black" Click="Button_Loginwindow" Content="LoginWindow" Margin="0,11,0,11" Width="341"/>
 
 
 
 
 
 
-        <DataGrid HorizontalAlignment="Center" AutoGenerateColumns="False" x:Name="CustomerGrid" Grid.Row="6" Grid.ColumnSpan="2" Width="468" >
+        <DataGrid  AutoGenerateColumns="False" x:Name="CustomerGrid" Grid.Row="6" Grid.ColumnSpan="2" Width="468" >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
                 <DataGridTextColumn Header="Name" Binding="{Binding FirstName}"/>
